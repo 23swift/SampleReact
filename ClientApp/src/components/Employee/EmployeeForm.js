@@ -2,6 +2,7 @@ import React, { Component,useState  } from 'react'
 import { ValidateEmployeeForm } from './Validation';
 import{isFormValid } from './Validation';
 import {InputField} from '../formElements/inputField/InputField';
+import DatePicker from 'react-date-picker';
 export  class EmployeeForm extends React.Component {
     constructor(props) {
       super(props);
@@ -59,7 +60,7 @@ export  class EmployeeForm extends React.Component {
       console.log(this.state);
       event.preventDefault();
     }
-
+onChange = date => this.setState({ date })
 
    
     render() {
@@ -68,6 +69,12 @@ export  class EmployeeForm extends React.Component {
     return (
        
         <form onSubmit={this.handleSubmit} noValidate>
+            <div >
+            <DatePicker  className="form-control"
+              onChange={this.onChange}
+              value={this.state.date}
+            />
+          </div>
             <InputField label="First Name" name="firstName" formErrors={formErrors} onChangeFn={this.handleChange}/>
             <InputField label="Last Name" name="lastName" formErrors={formErrors} onChangeFn={this.handleChange}/>
             <InputField label="Address" name="address" formErrors={formErrors} onChangeFn={this.handleChange}/>

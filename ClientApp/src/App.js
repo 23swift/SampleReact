@@ -6,6 +6,8 @@ import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import {MySample} from './components/MySample';
 import {EmployeeForm} from './components/Employee/EmployeeForm';
+import{NewPage} from './components/NewPage'
+import {FormikPage} from './components/FormikPage'
 export default class App extends Component {
   static displayName = App.name;
 
@@ -17,6 +19,7 @@ export default class App extends Component {
         <Route path='/fetch-data' component={FetchData} />
         <Route path='/my-page' component={MySample} />
         <Route path='/nameForm' component={EmployeeForm} />
+        <Route path='/newPage' component={FormikPage} />
         
       </Layout>
     );
