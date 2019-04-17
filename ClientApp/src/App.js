@@ -8,6 +8,7 @@ import {MySample} from './components/MySample';
 import {EmployeeForm} from './components/Employee/EmployeeForm';
 import{NewPage} from './components/NewPage'
 import {FormikPage} from './components/FormikPage'
+import './scss/custom.css'
 export default class App extends Component {
   static displayName = App.name;
 
