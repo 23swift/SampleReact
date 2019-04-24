@@ -1,49 +1,77 @@
 import React from 'react';
-import { Formik,Field,ErrorMessage   } from 'formik';
+import { Form,Field,withFormik    } from 'formik';
+import $ from 'jquery';
 import * as Yup from 'yup';
-export  const FormikPage = () => (
-  <div>
-    <h1>Employee</h1>
-    <Formik
-      initialValues={{ firstName: '',lastName:'' }}
+
+const isValidForm=(obj)=>{
+    return $.isEmptyObject(obj);
+
+}
+const FormikPageTemplate =({values, touched, errors,isSubmitting }) =>
+  (<Form>
+      <h1>Sign in</h1>
      
-      validationSchema={SignupSchema}
-      onSubmit={(values, actions) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          actions.setSubmitting(false);
-        }, 1000);
-      }}
-      >
+     <div className="form-group">
+     
+     <label className={errors.name && touched.name?"text-danger":""} >Name</label>
+        <Field type="text"  className={errors.name && touched.name?"form-control  is-invalid":"form-control"} name="name"   />
+        {errors.name && touched.name && <span className="invalid-feedback">{errors.name}</span>  }
+     </div>
+     <div className="form-group">
+     <label className={errors.email && touched.email?"text-danger":""} >Email</label>
+          <Field type="email" className={errors.email && touched.email?"form-control  is-invalid":"form-control"}  name="email" />
+          {errors.email && touched.email && <span className="invalid-feedback">{errors.email}</span>  }
+     </div>
+     <div className="form-group">
+     <label className={errors.password && touched.password?"text-danger":""}>Password</label>
+          <Field type="password" className={errors.password && touched.password?"form-control  is-invalid":"form-control"}  name="password"  />
+          {errors.password && touched.password && <span className="invalid-feedback">{errors.password}</span>  }
+     </div>
+      <button type="submit" className="btn btn-primary" disabled={isValidForm(errors) && !isSubmitting ? "":"disabled"}>
+        
+        {isSubmitting ? <span><span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Please wait...</span>: "Submit"}
+      </button>
+     
+   </Form>);
 
-      {({ errors, touched, isValidating,isSubmitting,dirty}) => (
-        <form >
-        <div   className= "form-group" >
-           <label className={errors.firstName && touched.firstName ?"text-danger" :""}>First Name</label>
-            <Field className={errors.firstName && touched.firstName ?"form-control is-invalid" :"form-control"} type="text" name="firstName" placeholder="First Name" />
-            <ErrorMessage name="firstName" render={msg => <span className="invalid-feedback">{msg}</span>} />
-        </div>
-        <div className="form-group">
-        <label className={errors.lastName && touched.lastName ?"text-danger" :""}>Last Name</label>
-        <Field className={errors.lastName && touched.lastName ?"form-control is-invalid" :"form-control"} type="text" name="lastName" placeholder="last Name" />
-        <ErrorMessage name="lastName" render={msg => <span className="invalid-feedback">{msg}</span>} />
-        </div>
-
-          <button type="submit" className="btn btn-primary" disabled={isSubmitting}>Submit</button>
-        </form>
-      )}
-    </Formik>
-  </div>
-);
-const SignupSchema = Yup.object().shape({
-    firstName: Yup.string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Required'),
-    lastName: Yup.string()
-      .min(2, 'Too Short!')
-      .max(10, 'Too Long!')
-      .required('Required')
-   
+  const SignupSchema=Yup.object().shape({
+    name:Yup.string()
+    .min(2,"Minimum of two Characters")
+    .max(20,"Maximum of 20 Characters")
+    .required('Name is Required'),
+    email:Yup.string()
+    .email('Invalid email')
+    .required('Email is Required'),
+    password:Yup.string().matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, { excludeEmptyString: true,message:"Minimum eight characters, at least one uppercase letter, one lowercase letter and one number" })
+    .required('Password is Required')
+    .min(8,"Minimum of 8 Characters")
+    
+  
   });
+
+export const FormikPage = withFormik({
+  mapPropsToValues({ name,email,password}) {
+
+    return{
+        name:name || "",
+        email:email ||"",
+        password:password ||""
+    }
+  },
+  // Custom sync validation
+  validationSchema:SignupSchema
+  ,
+
+  handleSubmit: (values, { setSubmitting }) => {
+    setSubmitting(true);
+    setTimeout(() => {
+      alert(JSON.stringify(values.password, null, 2));
+      setSubmitting(false);
+    }, 3000);
+  },
+
+  displayName: 'BasicForm',
+})(FormikPageTemplate);
+
+
 export default FormikPage
