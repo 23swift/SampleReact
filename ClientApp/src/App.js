@@ -8,12 +8,14 @@ import {MySample} from './components/MySample';
 import {EmployeeForm} from './components/Employee/EmployeeForm';
 import{NewPage} from './components/NewPage'
 import {FormikPage} from './components/FormikPage'
+import{Posts} from './components/Posts'
 
 export default class App extends Component {
   static displayName = App.name;
 
   render () {
     return (
+      
       <Layout>
         <Route exact path='/' component={Home} />
         <Route path='/counter' component={Counter} />
@@ -21,6 +23,7 @@ export default class App extends Component {
         <Route path='/my-page' component={MySample} />
         <Route path='/nameForm' component={EmployeeForm} />
         <Route path='/sign-in' component={FormikPage} />
+        <Route path='/posts' component={Posts} />
         
       </Layout>
     );

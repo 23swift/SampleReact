@@ -7,6 +7,22 @@ const isValidForm=(obj)=>{
     return $.isEmptyObject(obj);
 
 }
+//Validation Schema
+const SignupSchema=Yup.object().shape({
+  name:Yup.string()
+  .min(2,"Minimum of two Characters")
+  .max(20,"Maximum of 20 Characters")
+  .required('Name is Required'),
+  email:Yup.string()
+  .email('Invalid email')
+  .required('Email is Required'),
+  password:Yup.string().matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, { excludeEmptyString: true,message:"Minimum eight characters, at least one uppercase letter, one lowercase letter and one number" })
+  .required('Password is Required')
+  .min(8,"Minimum of 8 Characters")
+  
+
+});
+//Form template
 const FormikPageTemplate =({values, touched, errors,isSubmitting }) =>
   (<Form>
       <h1>Sign in</h1>
@@ -34,21 +50,8 @@ const FormikPageTemplate =({values, touched, errors,isSubmitting }) =>
      
    </Form>);
 
-  const SignupSchema=Yup.object().shape({
-    name:Yup.string()
-    .min(2,"Minimum of two Characters")
-    .max(20,"Maximum of 20 Characters")
-    .required('Name is Required'),
-    email:Yup.string()
-    .email('Invalid email')
-    .required('Email is Required'),
-    password:Yup.string().matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, { excludeEmptyString: true,message:"Minimum eight characters, at least one uppercase letter, one lowercase letter and one number" })
-    .required('Password is Required')
-    .min(8,"Minimum of 8 Characters")
-    
   
-  });
-
+//Form Configuration
 export const FormikPage = withFormik({
   mapPropsToValues({ name,email,password}) {
 
