@@ -8,12 +8,26 @@ import {MySample} from './components/MySample';
 import {EmployeeForm} from './components/Employee/EmployeeForm';
 import{NewPage} from './components/NewPage'
 import {FormikPage} from './components/FormikPage'
-import{Posts} from './components/Posts'
+import{PostsContainer} from './components/PostsContainer'
 
-export default class App extends Component {
+import {connect} from 'react-redux'
+import updateUser from './components/reduxAppConfig/User/UserAction'
+import store from './store';
+
+class App extends Component {
+  constructor(props){
+    super(props)
+
+    this.onUpdateUser=this.onUpdateUser.bind(this);
+  }
+  onUpdateUser(){
+    
+    this.props.onUserUpdate('Arnold Costamero');
+  };
   static displayName = App.name;
 
   render () {
+    // console.log(this.props);
     return (
       
       <Layout>
@@ -23,9 +37,23 @@ export default class App extends Component {
         <Route path='/my-page' component={MySample} />
         <Route path='/nameForm' component={EmployeeForm} />
         <Route path='/sign-in' component={FormikPage} />
-        <Route path='/posts' component={Posts} />
+        <Route path='/postsContainer' component={PostsContainer} />
         
       </Layout>
+     
+               
     );
   }
 }
+
+const mapStateToProps=state=>({
+
+  posts:state.posts,
+  user:state.user
+});
+const mapDispatchToProps={
+   onUserUpdate:updateUser
+
+}
+// export default  connect(mapStateToProps,mapDispatchToProps)(App);
+export default  App;
