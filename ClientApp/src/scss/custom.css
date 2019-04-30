@@ -1,6 +1,14 @@
 .invalid-feedback {
-  /* display: none; */
+  display: none;
   width: 100%;
   margin-top: .25rem;
   font-size: 80%;
   color: #dc3545; }
+
+h1 {
+  color: #0B2972; }
+
+.btn-primary {
+  color: #fff;
+  background-color: #0B2972;
+  border-color: #0B2972; }

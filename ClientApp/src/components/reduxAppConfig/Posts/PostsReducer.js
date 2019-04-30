@@ -1,15 +1,27 @@
-import {FETCH_POST,ADD_POST} from './PostsActions'
+import {FETCH_POST,ADD_POST,ON_CHANGE_POST,BIND_POST} from './PostsActions'
+const initialState={
+    
+   postList:[],
+      post:{
+        title:'',
+        body:''
+      }
+      };
 
-export default function PostsReducer(state=[],{type,payload}){
+export default function PostsReducer(state=initialState,{type,payload}){
 
-  console.log(FETCH_POST);
+  
   switch (type) {
     case FETCH_POST:
-    console.log(payload.posts);
-    
-    return payload.posts
+    console.log(payload);
+      return {
+        ...state,
+        postList:payload.postList
+
+      };
       break;
-      case ADD_POST:
+
+    case ADD_POST:
       console.log(payload.posts);
       state.posts.push(
         {
@@ -18,7 +30,22 @@ export default function PostsReducer(state=[],{type,payload}){
       );
       return payload
         break;
-  
+      
+    case ON_CHANGE_POST:
+      // console.log(payload.post);
+      
+      return {
+        ...state,
+        post:payload.post
+
+      };
+        break;
+        case BIND_POST:
+      console.log(payload.post);
+      
+      return payload
+        break;
+
     default:
     return state;
   }

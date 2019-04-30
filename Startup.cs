@@ -60,7 +60,7 @@ namespace SampleReact
 
                 if (env.IsDevelopment())
                 {
-                    spa.UseReactDevelopmentServer(npmScript: "start");
+                    spa.UseReactDevelopmentServer(npmScript: "start watch-css");
                 }
             });
         }

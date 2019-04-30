@@ -1,7 +1,4 @@
 import React, { Component } from 'react'
-import PostForm from './PostForm'
-
-
 
 import {connect} from 'react-redux'
 
@@ -13,7 +10,7 @@ export class Posts extends Component {
     // this.state={
     //   posts:[]
     // }
-console.log(this.props.posts);
+  // console.log(this.props);
     this.onPostsFetch=this.onPostsFetch.bind(this);
   }
 
@@ -33,8 +30,8 @@ console.log(this.props.posts);
   }
   render() {
     // let items=store.getState();
-  
-    const postItems=this.props.posts.map(post=>(
+    // console.log(this.props.model);
+    const postItems=this.props.postList.map(post=>(
       
           <li key={post.id}>
 
@@ -51,7 +48,7 @@ console.log(this.props.posts);
             <div>
             
                <div>
-              <PostForm/>
+             
               <h1>Posts</h1>
               {/* <button className="btn btn-primary" onClick={this.onPostsFetch}>
                   Load Post
@@ -76,8 +73,8 @@ console.log(this.props.posts);
 
 const mapStateToProps=state=>(
   {
-        posts:state.posts
-});
+        postList:state.posts.postList
+      });
 const mapDispatchToProps={
   onPostsFetch:fetchPost
 

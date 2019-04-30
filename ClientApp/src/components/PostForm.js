@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
+import {connect} from 'react-redux'
+import {onChangePost,onBindPost} from './reduxAppConfig/Posts/PostsActions'
 
-export default class PostForm extends Component {
+export class PostForm extends Component {
     constructor(props){
         super(props);
     
@@ -11,10 +13,15 @@ export default class PostForm extends Component {
             this.onChange=this.onChange.bind(this);
             this.handleSubmit=this.handleSubmit.bind(this);
       }
+    //   componentWillMount(){
     
+      
+    //     // this.props.onBindPost();
+    //   }
     onChange=(e)=>{
 
-        this.setState({[e.target.name]:e.target.value});
+        // this.setState({[e.target.name]:e.target.value});
+        this.props.onChangePost({[e.target.name]:e.target.value});
     }
 
     handleSubmit=(e)=>{
@@ -37,19 +44,19 @@ export default class PostForm extends Component {
 
     }
   render() {
-
+     console.log(this.props.post);
     return (
       <div>
             <h1>Add Post</h1>
             <form onSubmit={this.handleSubmit}>
                 <div className="form-group">
                     <label>Title</label>
-                    <input type="text"  className="form-control" name="title" value={this.state.title} onChange={this.onChange}/>
+                    <input type="text"  className="form-control" name="title" value={this.props.post.title} onChange={this.onChange}/>
 
                 </div>
                 <div className="form-group">
                     <label>Body</label>
-                    <textarea  className="form-control" name="body" value={this.state.body} onChange={this.onChange}/>
+                    <textarea  className="form-control" name="body" value={this.props.post.body} onChange={this.onChange}/>
 
                 </div>
             <button className="btn btn-primary">Submit</button>
@@ -59,3 +66,16 @@ export default class PostForm extends Component {
     )
   }
 }
+const mapStateToProps=state=>(
+    {
+          post:state.posts.post
+  });
+
+  const mapDispatchToProps={
+    onChangePost:onChangePost,
+    // onBindPost:onBindPost
+  
+  
+  }
+
+  export default connect(mapStateToProps,mapDispatchToProps)(PostForm) 
