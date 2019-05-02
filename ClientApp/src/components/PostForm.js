@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
-import {onChangePost,onBindPost} from './reduxAppConfig/Posts/PostsActions'
-
+import {addPost} from './reduxAppConfig/Posts/PostsActions'
+import { Form,Field,withFormik    } from 'formik';
+import $ from 'jquery';
+import * as Yup from 'yup';
 export class PostForm extends Component {
     constructor(props){
         super(props);
@@ -13,15 +15,11 @@ export class PostForm extends Component {
             this.onChange=this.onChange.bind(this);
             this.handleSubmit=this.handleSubmit.bind(this);
       }
-    //   componentWillMount(){
-    
-      
-    //     // this.props.onBindPost();
-    //   }
+   
     onChange=(e)=>{
 
-        // this.setState({[e.target.name]:e.target.value});
-        this.props.onChangePost({[e.target.name]:e.target.value});
+        this.setState({[e.target.name]:e.target.value});
+        
     }
 
     handleSubmit=(e)=>{
@@ -33,30 +31,28 @@ export class PostForm extends Component {
             body:this.state.body
         };
 
-        fetch('https://jsonplaceholder.typicode.com/posts',{
-            method:'POST',
-            headers:{'content-type':'application/json'},
-            body:JSON.stringify(post)
-
-        }).then(res=>res.json()).then(data=>
-            console.log(data)
-        );
+       
+        this.props.addPost(post);
 
     }
+  
+
   render() {
-     console.log(this.props.post);
+     console.log(this.props);
+    
     return (
       <div>
+          <PostFormPage addPost={this.props.addPost} />
             <h1>Add Post</h1>
             <form onSubmit={this.handleSubmit}>
                 <div className="form-group">
                     <label>Title</label>
-                    <input type="text"  className="form-control" name="title" value={this.props.post.title} onChange={this.onChange}/>
+                    <input type="text"  className="form-control" name="title" value={this.state.title} onChange={this.onChange}/>
 
                 </div>
                 <div className="form-group">
                     <label>Body</label>
-                    <textarea  className="form-control" name="body" value={this.props.post.body} onChange={this.onChange}/>
+                    <textarea  className="form-control" name="body" value={this.state.body} onChange={this.onChange}/>
 
                 </div>
             <button className="btn btn-primary">Submit</button>
@@ -66,16 +62,21 @@ export class PostForm extends Component {
     )
   }
 }
-const mapStateToProps=state=>(
+function mapStateToProps(state)
     {
-          post:state.posts.post
-  });
+        // console.log('mapStateToProps',state.posts.newPost);
+        return{
+            post:state.posts.newPost
+        }
+          
+  };
 
   const mapDispatchToProps={
-    onChangePost:onChangePost,
-    // onBindPost:onBindPost
+   addPost:addPost
   
   
   }
+
+ 
 
   export default connect(mapStateToProps,mapDispatchToProps)(PostForm) 

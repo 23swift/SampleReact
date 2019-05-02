@@ -13,7 +13,7 @@ export default function PostsReducer(state=initialState,{type,payload}){
   
   switch (type) {
     case FETCH_POST:
-    console.log(payload);
+   
       return {
         ...state,
         postList:payload.postList
@@ -22,12 +22,12 @@ export default function PostsReducer(state=initialState,{type,payload}){
       break;
 
     case ADD_POST:
-      console.log(payload.posts);
-      state.posts.push(
-        {
-          title:payload.title,body:payload.body
-        }
-      );
+        return {
+          ...state,
+          newPost:payload
+
+        };
+     
       return payload
         break;
       
@@ -36,12 +36,13 @@ export default function PostsReducer(state=initialState,{type,payload}){
       
       return {
         ...state,
+        ...state.post,
         post:payload.post
 
       };
         break;
         case BIND_POST:
-      console.log(payload.post);
+    
       
       return payload
         break;

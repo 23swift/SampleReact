@@ -28,22 +28,28 @@ export  function fetchPost(){
     }
 
 }
-export  function addPost(title,body){
+export  const addPost = postData=>dispatch=>{
+    fetch('https://jsonplaceholder.typicode.com/posts',{
+        method:'POST',
+        headers:{'content-type':'application/json'},
+        body:JSON.stringify(postData)
 
-    return{
-        type:ADD_POST,
-        payload:{
-            title:title,body:body
-        }
-    }
-
+    }).then(res=>res.json()).then(newPost=>{
+        // console.log(newPost);
+                dispatch({
+                    type:ADD_POST,
+                    payload:newPost
+                })
+            }
+    );
+    
 }
-export  function onChangePost(postParam){
+export  function onChangePost(name,value){
 
     return{
         type:ON_CHANGE_POST,
         payload:{
-            post:postParam
+            post:{[name]:value}
         }
     }
 
