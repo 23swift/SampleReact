@@ -1,11 +1,12 @@
-import {FETCH_POST,ADD_POST,ON_CHANGE_POST,BIND_POST} from './PostsActions'
+import {FETCH_POST,ADD_POST,REQUEST_FETCH_POST,FETCH_POST_RECIEVED} from './PostsActions'
 const initialState={
     
-   postList:[],
+          postList:[],
           post:{
             title:'',
             body:''
-          }
+          },
+          isFetching:false
       };
 
 export default function PostsReducer(state=initialState,{type,payload}){
@@ -13,39 +14,43 @@ export default function PostsReducer(state=initialState,{type,payload}){
   
   switch (type) {
     case FETCH_POST:
-   
+        
       return {
         ...state,
-        postList:payload.postList
+        // postList:payload.postList,
+        postList:payload
 
       };
       break;
+      case REQUEST_FETCH_POST:
+        
+      return {
+        ...state,
+        // postList:payload.postList,
+        isFetching:true
 
+      };
+      break;
+      case FETCH_POST_RECIEVED:
+        
+      return {
+        ...state,
+        // postList:payload.postList,
+        isFetching:false
+
+      };
+      break;
     case ADD_POST:
         return {
           ...state,
-          newPost:payload
+          newPost:payload,
+          isFetching:false
 
         };
      
-      return payload
         break;
       
-    case ON_CHANGE_POST:
-      // console.log(payload.post);
-      
-      return {
-        ...state,
-        ...state.post,
-        post:payload.post
-
-      };
-        break;
-        case BIND_POST:
-    
-      
-      return payload
-        break;
+   
 
     default:
     return state;

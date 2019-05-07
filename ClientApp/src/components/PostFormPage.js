@@ -21,7 +21,7 @@ const SignupSchema=Yup.object().shape({
 export class PostFormPage extends  React.Component{
   constructor(props){
     super(props)
-   console.log(this.props.addPost);
+  //  console.log(this.props.addPost);
   }
   render(){
     return(
@@ -30,18 +30,20 @@ export class PostFormPage extends  React.Component{
                 
                 
                 
-                onSubmit={(values, { setSubmitting }) => {
+                onSubmit={(values, { setSubmitting,resetForm }) => {
                   // same shape as initial values
                   setSubmitting(true);
+                  
                   const post={
 
                     title:values.title,
                     body:values.body
                 };
                   setTimeout(() => {
-                    console.log(post);
+                    // console.log(post);
                     this.props.addPost(post);
                     setSubmitting(false);
+                    resetForm(); 
                   }, 3000);
 
                 }}
@@ -51,6 +53,7 @@ export class PostFormPage extends  React.Component{
 
   }
 }
+
 
 const PostFormik = ({
  
@@ -92,7 +95,8 @@ function mapStateToProps(state)
     {
        
         return{
-            post:state.posts.post
+            post:state.posts.post,
+            isFetching:state.isFetching
             // post:state.posts.newPost
         }
           
