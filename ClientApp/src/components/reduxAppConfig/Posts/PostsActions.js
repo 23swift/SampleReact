@@ -35,7 +35,7 @@ export  const addPost = postData=>dispatch=>{
         body:JSON.stringify(postData)
 
     }).then(res=>res.json()).then(newPost=>{
-        // console.log(newPost);
+         console.log(newPost);
                 dispatch({
                     type:ADD_POST,
                     payload:newPost

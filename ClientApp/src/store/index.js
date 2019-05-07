@@ -17,14 +17,11 @@ const allReducers=combineReducers({
   user:UserReducer
 });
 const store= createStore(allReducers,
-  initialState,compose(
+  
             applyMiddleware(thunk),
             window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  )
+  
   );
 
-// console.log(store.getState());
-
-// store.dispatch(updateUserAction);
 
 export default store;

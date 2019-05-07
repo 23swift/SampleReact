@@ -2,10 +2,10 @@ import {FETCH_POST,ADD_POST,ON_CHANGE_POST,BIND_POST} from './PostsActions'
 const initialState={
     
    postList:[],
-      post:{
-        title:'',
-        body:''
-      }
+          post:{
+            title:'',
+            body:''
+          }
       };
 
 export default function PostsReducer(state=initialState,{type,payload}){

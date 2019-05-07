@@ -42,7 +42,7 @@ export class PostForm extends Component {
     
     return (
       <div>
-          <PostFormPage addPost={this.props.addPost} />
+         
             <h1>Add Post</h1>
             <form onSubmit={this.handleSubmit}>
                 <div className="form-group">

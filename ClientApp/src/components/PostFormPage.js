@@ -1,14 +1,11 @@
-import React from 'react';
-import { Form,Field,withFormik    } from 'formik';
+import React, { Component } from 'react'
+import { Form,Field,Formik    } from 'formik';
 import $ from 'jquery';
 import * as Yup from 'yup';
-
 import {connect} from 'react-redux'
 import {addPost} from './reduxAppConfig/Posts/PostsActions'
-const isValidForm=(obj)=>{
-  return $.isEmptyObject(obj);
-
-}
+// import {connect} from 'react-redux'
+// import {addPost} from './reduxAppConfig/Posts/PostsActions'
 const SignupSchema=Yup.object().shape({
   title:Yup.string()
   .min(2,"Minimum of two Characters")
@@ -20,69 +17,83 @@ const SignupSchema=Yup.object().shape({
   .max(50,"Maximum of 50 Characters")
 
 });
-//Form template
-const PostFormPageTemplate =({values, touched, errors,isSubmitting }) =>
-  (<Form>
-      <h1>Add Post</h1>
-     
-     <div className="form-group">
-     
-     <label className={errors.title && touched.title?"text-danger":""} >Title</label>
-        <Field type="text"  className={errors.title && touched.title?"form-control  is-invalid":"form-control"} name="title"   />
-        {errors.title && touched.title && <span className="invalid-feedback">{errors.title}</span>  }
-     </div>
-     <div className="form-group">
-     <label className={errors.body && touched.body?"text-danger":""} >Body</label>
-          <Field component="textarea" className={errors.body && touched.body?"form-control  is-invalid":"form-control"}  name="body" />
-          {errors.body && touched.body && <span className="invalid-feedback">{errors.body}</span>  }
-     </div>
-     
-      <button type="submit" className="btn btn-primary" disabled={isValidForm(errors) && !isSubmitting ? "":"disabled"}>
-        
-        {isSubmitting ? <span><span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Please wait...</span>: "Submit"}
-      </button>
-     
-   </Form>);
+
+export class PostFormPage extends  React.Component{
+  constructor(props){
+    super(props)
+   console.log(this.props.addPost);
+  }
+  render(){
+    return(
+                // <Formik component={PostFormik} />
+                <Formik validationSchema={SignupSchema}  initialValues={this.props.post} 
+                
+                
+                
+                onSubmit={(values, { setSubmitting }) => {
+                  // same shape as initial values
+                  setSubmitting(true);
+                  const post={
+
+                    title:values.title,
+                    body:values.body
+                };
+                  setTimeout(() => {
+                    console.log(post);
+                    this.props.addPost(post);
+                    setSubmitting(false);
+                  }, 3000);
+
+                }}
+                render={props => <PostFormik {...props} />} />
+              );
 
 
-//Form Configuration
-export const PostFormPage =withFormik({
-    mapPropsToValues({addPost, title,body}) {
-      console.log(addPost);
-      return{
-          title:title || "",
-          body:body ||"",
-          addPost:addPost
-      }
-    },
-    // Custom sync validation
-    validationSchema:SignupSchema
-    ,
-  
-    handleSubmit: (values, { props,setSubmitting }) => {
-      console.log(props);
-      setSubmitting(true);
-      const post={
+  }
+}
 
-        title:values.title,
-        body:values.body
-    };
-      setTimeout(() => {
-        // alert(JSON.stringify(values.title, null, 2));
+const PostFormik = ({
+ 
+  touched, errors,isSubmitting 
+})=>{
+  return(
+      <Form>
+        <h1>Add Post</h1>
+
+            <div className="form-group">
       
-        props.addPost(post);
-        setSubmitting(false);
-      }, 3000);
-    },
-  
-    displayName: 'BasicForm',
-  })(PostFormPageTemplate);
-  
-  function mapStateToProps(state)
+          <label className={errors.title && touched.title?"text-danger":""} >Title</label>
+              <Field type="text"  className={errors.title && touched.title?"form-control  is-invalid":"form-control"} name="title"   />
+              {errors.title && touched.title && <span className="invalid-feedback">{errors.title}</span>  }
+          </div>
+          <div className="form-group">
+          <label className={errors.body && touched.body?"text-danger":""} >Body</label>
+                <Field component="textarea" className={errors.body && touched.body?"form-control  is-invalid":"form-control"}  name="body" />
+                {errors.body && touched.body && <span className="invalid-feedback">{errors.body}</span>  }
+          </div>
+          
+            <button type="submit" className="btn btn-primary" disabled={isValidForm(errors) && !isSubmitting ? "":"disabled"}>
+              
+              {isSubmitting ? <span><span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Please wait...</span>: "Submit"}
+            </button>
+    
+       </Form>
+
+)}
+
+
+const isValidForm=(obj)=>{
+  return $.isEmptyObject(obj);
+
+}
+
+
+function mapStateToProps(state)
     {
-        // console.log('mapStateToProps',state.posts.newPost);
+       
         return{
-            post:state.posts.newPost
+            post:state.posts.post
+            // post:state.posts.newPost
         }
           
   };
@@ -93,4 +104,5 @@ export const PostFormPage =withFormik({
   
   }
 
-  export default connect(mapStateToProps,mapDispatchToProps)(PostFormPage) 
+
+export default  connect(mapStateToProps,mapDispatchToProps)(PostFormPage) 
