@@ -51,7 +51,7 @@ export class Posts extends Component {
                <div>
              
               <h1>Posts</h1>
-                   {this.props.isFetching && <span><span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Updating the list. Please wait...</span> }
+                   {this.props.isFetching && <span><span className="spinner-grow spinner-grow-lg text-primary" role="status" aria-hidden="true"></span> Updating the list. Please wait...</span> }
              
               <ul>
               {postItems}
