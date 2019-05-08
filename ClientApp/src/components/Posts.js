@@ -14,11 +14,12 @@ export class Posts extends Component {
     
    this.props.onPostsFetch();
   }
+
   componentWillReceiveProps(nextProps){
     
-    if(nextProps.newPost){
-      this.props.postList.unshift(nextProps.newPost)
-    }
+    // if(nextProps.newPost){
+    //   this.props.postList.unshift(nextProps.newPost)
+    // }
    
   }
 
