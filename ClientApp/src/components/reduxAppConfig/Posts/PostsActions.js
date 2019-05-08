@@ -33,18 +33,21 @@ export const BIND_POST='post:bind';
 // }
 export  const addPost = postData=>dispatch=>{
     dispatch({ type: REQUEST_FETCH_POST,payload:true })
-    fetch('https://jsonplaceholder.typicode.com/posts',{
+    // fetch('https://jsonplaceholder.typicode.com/posts',{
+        fetch('/api/Post/',{
         method:'POST',
         headers:{'content-type':'application/json'},
         body:JSON.stringify(postData)
 
     }).then(res=>res.json()).then(newPost=>{
+        console.log(newPost);
         
                 dispatch({
                     type:ADD_POST,
-                    payload:newPost
+                    payload:{}
                 })
                 // dispatch({ type:  FETCH_POST_RECIEVED, payload:false  })
+                
             }
     );
     
@@ -54,14 +57,16 @@ export const fetchPost = ()=> dispatch=> {
 
         dispatch({ type: REQUEST_FETCH_POST,payload:true })
 
-        fetch('https://jsonplaceholder.typicode.com/posts')
+        // fetch('https://jsonplaceholder.typicode.com/posts')
+        fetch('/api/Post/GetAll')
+       
        .then(response => response.json())
        .then(json => {
 
         setTimeout(() => {
             dispatch(
                 { type: FETCH_POST,
-                    payload:json 
+                    payload:json.items 
                 
               }
             )

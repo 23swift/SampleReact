@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using SampleReact.Service;
 
 namespace SampleReact
 {
@@ -26,8 +27,8 @@ namespace SampleReact
 
             services.AddDbContext<Data.AppDbContext>(options =>
                 options.UseSqlite(connectionString))
-                .AddUnitOfWork<Data.AppDbContext>();
-                
+                .AddUnitOfWork<Data.AppDbContext>()
+                .AddScoped<IPostService, PostService>(); 
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

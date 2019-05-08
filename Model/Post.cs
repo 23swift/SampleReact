@@ -1,3 +1,5 @@
+using System;
+
 namespace SampleReact.Model
 {
      public class Post
@@ -8,5 +10,6 @@ namespace SampleReact.Model
 
         public int BlogId { get; set; }
         public Blog Blog { get; set; }
+        public DateTime DateCreated{get;set;}=DateTime.Now;
     }
 }

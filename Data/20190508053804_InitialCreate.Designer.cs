@@ -8,7 +8,7 @@ using SampleReact.Data;
 namespace SampleReact.Data
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190507161424_InitialCreate")]
+    [Migration("20190508053804_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,8 +69,28 @@ namespace SampleReact.Data
                         {
                             Id = 2,
                             BlogId = 1,
-                            Body = @"
-                quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto",
+                            Body = "quia et suscipit\\nsuscipit recusandae consequuntur expedita et cum\\nreprehenderit molestiae ut ut quas totam\\nnostrum rerum est autem sunt rem eveniet architecto",
+                            Title = "Second post"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BlogId = 1,
+                            Body = "est rerum tempore vitae\\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\\nfugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\\nqui aperiam non debitis possimus qui neque nisi nulla",
+                            Title = "Second post"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            BlogId = 1,
+                            Body = "quia et suscipit\\nsuscipit recusandae consequuntur expedita et cum\\nreprehenderit molestiae ut ut quas totam\\nnostrum rerum est autem sunt rem eveniet architecto",
+                            Title = "Second post"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            BlogId = 1,
+                            Body = "quia et suscipit\\nsuscipit recusandae consequuntur expedita et cum\\nreprehenderit molestiae ut ut quas totam\\nnostrum rerum est autem sunt rem eveniet architecto",
                             Title = "Second post"
                         });
                 });

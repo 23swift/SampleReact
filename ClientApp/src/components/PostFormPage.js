@@ -4,8 +4,7 @@ import $ from 'jquery';
 import * as Yup from 'yup';
 import {connect} from 'react-redux'
 import {addPost} from './reduxAppConfig/Posts/PostsActions'
-// import {connect} from 'react-redux'
-// import {addPost} from './reduxAppConfig/Posts/PostsActions'
+
 const SignupSchema=Yup.object().shape({
   title:Yup.string()
   .min(2,"Minimum of two Characters")
