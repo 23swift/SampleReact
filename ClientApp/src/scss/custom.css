@@ -5,7 +5,7 @@
   font-size: 80%;
   color: #dc3545; }
 
-h1 {
+h1, h2 {
   color: #0B2972; }
 
 .btn-primary {
@@ -16,12 +16,20 @@ h1 {
 .card {
   margin-bottom: 5px; }
 
+.card-body {
+  padding: 8px; }
+
 .btn {
   margin: 1px; }
 
 .text-warning {
   color: #f7af19; }
 
-.alert-warning {
-  background-color: #f7af19;
-  color: #0B2972; }
+.text-primary {
+  color: #0B2972 !important; }
+
+.postDate {
+  font-size: 13px; }
+
+.customCardFooter {
+  padding: 5px; }

@@ -64,8 +64,9 @@ const PostFormik = ({
 })=>{
   return(
       <Form>
-        <h1>Add Post</h1>
-
+        
+         <h2>Add Post</h2>
+        
             <div className="form-group">
       
           <label className={errors.title && touched.title?"text-danger":""} >Title</label>
