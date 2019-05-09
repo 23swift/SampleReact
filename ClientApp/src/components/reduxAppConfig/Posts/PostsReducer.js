@@ -18,7 +18,9 @@ export default function PostsReducer(state=initialState,{type,payload}){
       return {
         ...state,
         // postList:payload.postList,
-        postList:payload
+        postList:payload,
+        isFetching:false
+
 
       };
       break;
@@ -45,6 +47,7 @@ export default function PostsReducer(state=initialState,{type,payload}){
           ...state,
           newPost:payload,
           isFetching:false
+          
 
         };
      

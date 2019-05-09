@@ -32,9 +32,16 @@ namespace SampleReact.Service
             return _post;
         }
 
+        public void DeletePost(int postId)
+        {
+             var post=this.postRepo.GetFirstOrDefault(predicate: b => b.Id.Equals(postId));
+            this.postRepo.Delete(post);
+            this._unitOfWork.SaveChanges();
+        }
+
         public  IPagedList<Post> FetchPosts()
         {
-            var result=this.postRepo.GetPagedList(pageIndex: 0, pageSize: 100, orderBy:p=>p.OrderBy(x=>x.DateCreated));
+            var result=this.postRepo.GetPagedList(pageIndex: 0, pageSize: 100, orderBy:p=>p.OrderByDescending(x=>x.DateCreated));
             return  result;
         }
     }

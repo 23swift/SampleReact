@@ -3,7 +3,7 @@ import { Form,Field,Formik    } from 'formik';
 import $ from 'jquery';
 import * as Yup from 'yup';
 import {connect} from 'react-redux'
-import {addPost} from './reduxAppConfig/Posts/PostsActions'
+import {addPost,fetchPost} from './reduxAppConfig/Posts/PostsActions'
 
 const SignupSchema=Yup.object().shape({
   title:Yup.string()
@@ -13,7 +13,7 @@ const SignupSchema=Yup.object().shape({
   body:Yup.string()
   .required('body is Required')
   // password:Yup.string().matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, { excludeEmptyString: true,message:"Minimum eight characters, at least one uppercase letter, one lowercase letter and one number" })
-  .max(50,"Maximum of 50 Characters")
+  .max(500,"Maximum of 500 Characters")
 
 });
 
@@ -40,7 +40,11 @@ export class PostFormPage extends  React.Component{
                 };
                   setTimeout(() => {
                     // console.log(post);
-                    this.props.addPost(post);
+                    this.props.addPost(post).then(()=>{
+                      this.props.fetchPost()  
+                    }
+                     
+                    );
                     setSubmitting(false);
                     resetForm(); 
                   }, 3000);
@@ -78,7 +82,7 @@ const PostFormik = ({
               
               {isSubmitting ? <span><span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Please wait...</span>: "Submit"}
             </button>
-    
+            <hr/>
        </Form>
 
 )}
@@ -102,8 +106,8 @@ function mapStateToProps(state)
   };
 
   const mapDispatchToProps={
-   addPost:addPost
-  
+   addPost:addPost,
+   fetchPost:fetchPost
   
   }
 

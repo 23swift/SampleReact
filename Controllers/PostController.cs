@@ -38,18 +38,21 @@ namespace SampleReact.Controllers
         }
 
         // POST api/PostControlle
-        [HttpPost("")]
+        [HttpPost]
         public ActionResult Post([FromBody] Post post) {
           var result=  _postService.AddPost(post);
             return Ok(result);
          }
 
         // PUT api/PostControlle/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value) { }
+        [HttpPut("{Id}")]
+        public void Put(int Id, [FromBody] string value) { }
 
         // DELETE api/PostControlle/5
-        [HttpDelete("{id}")]
-        public void DeleteById(int id) { }
+        [HttpDelete("{Id}")]
+        public ActionResult Delete(int Id) { 
+              _postService.DeletePost(Id);
+            return Ok(); 
+        }
     }
 }

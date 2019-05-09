@@ -10,5 +10,18 @@ h1 {
 
 .btn-primary {
   color: #fff;
-  background-color: #0B2972;
+  background-color: #1e4f8e;
   border-color: #0B2972; }
+
+.card {
+  margin-bottom: 5px; }
+
+.btn {
+  margin: 1px; }
+
+.text-warning {
+  color: #f7af19; }
+
+.alert-warning {
+  background-color: #f7af19;
+  color: #0B2972; }
