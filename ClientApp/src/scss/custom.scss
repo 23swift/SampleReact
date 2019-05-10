@@ -7,10 +7,9 @@
 }
 
 
-h1, h2{
+h1, h2, h5{
     color:#0B2972 ;
 }
-
 
 .btn-primary {
     color: #fff;
@@ -22,18 +21,18 @@ h1, h2{
     
 }
 .card-body{
-    padding: 8px;
+    padding: 6px;
 }
 
-.btn{
-    margin: 1px;
-}
+// .btn{
+//     margin: 1px;
+// }
 .text-warning{
     color:#f7af19;
 }
-.text-primary{
-    color: #0B2972 !important;
-}
+// .text-primary{
+//     color: #0B2972 !important;
+// }
 
 .postDate{
     font-size: 13px;
@@ -41,4 +40,7 @@ h1, h2{
 }
 .customCardFooter{
     padding: 5px;
+}
+.card-footer{
+    padding: 4px;
 }

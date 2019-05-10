@@ -54,7 +54,7 @@ export const fetchPost = ()=> dispatch=> {
     fetch('/api/Post/GetAll')
    .then(response => response.json())
    .then(json => {
- console.log(json)
+ 
     setTimeout(() => {
         dispatch(
             { type: FETCH_POST,

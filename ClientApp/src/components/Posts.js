@@ -2,12 +2,17 @@ import React, { Component } from 'react'
 import $ from 'jquery';
 import {connect} from 'react-redux'
 import {fetchPost,deletePost} from './reduxAppConfig/Posts/PostsActions'
+import PostFormPageEdit from './PostFormPageEdit'
+import {Button,CircularProgress,Grid } from '@material-ui/core';
+
+
+
 export class Posts extends Component {
   constructor(props){
     super(props);
    
     this.state={
-        deleteAction:'',
+        mode:'',
         id:0
     }
  
@@ -21,19 +26,23 @@ export class Posts extends Component {
 
   
   onDeleteClicked=id=>{
-      console.log(id);
-      this.setState({...this.state,deleteAction:'delete',id:id});
-
-      setTimeout(() => {
-        console.log(this.state);
-
-      },3000);
-     
+      
+      this.setState({...this.state,mode:'delete',id:id});
+ 
   }
+
+  onEditClicked=id=>{
+    
+    this.setState({...this.state,mode:'edit',id:id});
+}
+
+onCancelClicked=id=>{
+  this.setState({...this.state,mode:'',id:0});
+}
 
   onNoClicked=id=>{
     console.log(id);
-    this.setState({...this.state,deleteAction:'',id:0});
+    this.setState({...this.state,mode:'',id:0});
 
     setTimeout(() => {
       console.log(this.state);
@@ -46,8 +55,8 @@ export class Posts extends Component {
     return(
       <div  className="float-right">
                 
-      <button type="button" className="btn btn-primary btn-sm">Edit</button>
-        <button type="button" className="btn btn-warning btn-sm text-dark" onClick={()=>this.onDeleteClicked(props.Id)} >Delete</button>
+      <Button color="primary" variant="contained"  onClick={()=>this.onEditClicked(props.Id)}>Edit</Button>
+        <Button color="secondary" variant="contained"  onClick={()=>this.onDeleteClicked(props.Id)} >Delete</Button>
          
     </div>
     
@@ -77,7 +86,7 @@ export class Posts extends Component {
     this.props.deletePost(Id).then(()=>{
       this.props.fetchPost()  
     });
-    console.log('delete',Id);
+    
 
   }
    
@@ -90,33 +99,42 @@ export class Posts extends Component {
     
       <div className="card-body">
       
-      <div className="p-1 mb-2 bg-warning text-dark rounded">
-      <p className="float-right postDate text-black-50">Date: {post.dateCreated} </p>
-      <h5 className="card-title text-primary">{post.title}</h5>
+      { (this.state.mode==''|| this.state.mode=='delete') && <div className="p-1 mb-2">
+        <p className="float-right postDate text-black-50">Date: {post.dateCreated} </p>
+        <h5 className="card-title">{post.title}</h5>
       </div>
+    }
               
               
-              <p className="card-text">{post.body}</p>
+             
+              { this.state.mode=='edit' && this.state.id==post.id ? PostFormPageEdit ({post:post,onCancelClicked:this.onCancelClicked}):  
+              <p className="card-text">{post.body}</p>}
+
+              
+              
               
                 <div>
         
-                    {
-                      
-                      this.state.deleteAction=='delete' && this.state.id==post.id ? this.PostActionConfirmed({Id:post.id}):this.PostAction({Id:post.id})
-              
-                  }
+                   
       
                
             </div>
+           
         </div>
-    
+        <div className="card-footer">
+                 {
+                      
+                      this.state.mode=='delete' && this.state.id==post.id ? this.PostActionConfirmed({Id:post.id}): this.state.mode!='edit' && this.PostAction({Id:post.id})
+              
+                  }
+      </div>
       </div>
   )))
   }
   
   render() {
     
-// console.log( this.props.isFetching);
+
    
     return (
        
@@ -142,7 +160,7 @@ export class Posts extends Component {
 
 function mapStateToProps(state){
 
-  // console.log('mapStateToProps Postlis', state.posts.isFetching);
+
     return {
         postList:state.posts.postList,
         newPost:state.posts.newPost,
