@@ -90,7 +90,7 @@ export class Posts extends Component {
     
       <div className="card-body">
       
-      <div class="p-1 mb-2 bg-warning text-dark rounded">
+      <div className="p-1 mb-2 bg-warning text-dark rounded">
       <p className="float-right postDate text-black-50">Date: {post.dateCreated} </p>
       <h5 className="card-title text-primary">{post.title}</h5>
       </div>
@@ -126,7 +126,7 @@ export class Posts extends Component {
               
               <h2>Posts</h2>
             
-              {this.props.isFetching && <p><p className="spinner-grow spinner-grow-lg text-primary" role="status" aria-hidden="true"></p> Updating the list. Please wait...</p> }
+              {this.props.isFetching && <div><p className="spinner-grow spinner-grow-lg text-primary" ></p> Updating the list. Please wait...</div> }
               {this.PostItems({postList:this.props.postList})}
              
             </div>
