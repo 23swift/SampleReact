@@ -4,7 +4,7 @@ import $ from 'jquery';
 import * as Yup from 'yup';
 import {connect} from 'react-redux'
 import {addPost,fetchPost} from './reduxAppConfig/Posts/PostsActions'
-import {Button,CircularProgress,Grid } from '@material-ui/core';
+import {Button,CircularProgress } from '@material-ui/core';
 import "react-datepicker/dist/react-datepicker.css";
 import { createMuiTheme,MuiThemeProvider } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
@@ -86,42 +86,58 @@ const PostFormik = ({
   touched, errors,isSubmitting 
 })=>{
   return(
+
+    
       <Form>
         
-        
-            <Typography component="h4" variant="h4" gutterBottom color="primary">
+        <div className="card">
+      <div className="card-body">
+      
+      <Typography component="h4" variant="h4" gutterBottom color="primary">
               Add Post
             </Typography>
             <div className="form-group">
       
           {/* <label className={errors.title && touched.title?"text-danger":""} >Title</label> */}
-              <Field type="text"  label="Title" component={TextField}  className={errors.title && touched.title?"form-control  is-invalid":"form-control"} name="title"   />
+              <Field  component={TextField} label="Title" fullWidth="true"  className={errors.title && touched.title?"is-invalid":""} name="title"   />
               {/* {errors.title && touched.title && <span className="invalid-feedback">{errors.title}</span>  } */}
           </div>
           <div className="form-group">
-          <label className={errors.body && touched.body?"text-danger":""} >Body</label>
-                <Field component={TextField} multiline className={errors.body && touched.body?"form-control  is-invalid":"form-control"}  name="body" />
+          {/* <label className={errors.body && touched.body?"text-danger":""} >Body</label> */}
+                <Field component={TextField} fullWidth="true" label="Body" multiline rows="2" rowsMax="2"className={errors.body && touched.body?"is-invalid":""}  name="body" />
                 {/* {errors.body && touched.body && <span className="invalid-feedback">{errors.body}</span>  } */}
-          </div>
-          <div className="form-group">
-                  <label>Date</label>
-                
-          </div>
 
-            {isValidForm(errors) && !isSubmitting ?  
-             <Button color="primary" variant="contained" type="submit" className="btn btn-primary">
-               <span>Submit</span> 
-            </Button> :
+              
+          </div>
+          
+          <div className="form-group">
+          {isValidForm(errors) && !isSubmitting ? 
+            <Button color="primary" variant="contained" type="submit" className="btn btn-primary">
+              <span>Submit</span> 
+          </Button> :
+          <Button color="primary" variant="contained"  className="btn btn-primary" disabled>
+          <span>Submit</span> 
+          </Button>
+          
+          
+                    
+
+          }
+          {isSubmitting &&<button class="btn btn-primary"  disabled>
+            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            Please wait...
+          </button>
+        }
+        </div>
             
-            <Button color="primary" variant="contained" className="btn btn-primary" disabled >
-             {isSubmitting ? <span className="text-primary"><CircularProgress color="secondary"  /> Please wait...</span>: "Submit"}
-            </Button> 
-                     
-           
-            }
-            
+          
+      </div>
+     
+     
+     
+    </div>
              
-            <hr/>
+            
        </Form>
 
 )}

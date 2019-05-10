@@ -141,10 +141,11 @@ onCancelClicked=id=>{
             <div>
                 
                <div>
-              
-              <h2>Posts</h2>
-            
-              {this.props.isFetching && <div><p className="spinner-grow spinner-grow-lg text-primary" ></p> Updating the list. Please wait...</div> }
+             
+              {this.props.isFetching ? <div className="text-black-50">
+                <span class="spinner-grow spinner-grow-sm text-primary" role="status" aria-hidden="true"></span>
+                Loading please wait...
+              </div>: <h2>Posts</h2>}
               {this.PostItems({postList:this.props.postList})}
              
             </div>
