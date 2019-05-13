@@ -111,23 +111,16 @@ const PostFormik = ({
           </div>
           
           <div className="form-group">
-          {isValidForm(errors) && !isSubmitting ? 
-            <Button color="primary" variant="contained" type="submit" className="btn btn-primary">
-              <span>Submit</span> 
-          </Button> :
-          <Button color="primary" variant="contained"  className="btn btn-primary" disabled>
-          <span>Submit</span> 
-          </Button>
           
-          
-                    
+            <Button color="primary" variant="contained" type="submit" className="btn btn-primary" disabled= {isValidForm(errors) && !isSubmitting ? false :true} >
+                {isSubmitting ? <span className="text-primary"> <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                Please wait...
+              </span> : "Submit"}
+          </Button> 
+               
 
-          }
-          {isSubmitting &&<button class="btn btn-primary"  disabled>
-            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-            Please wait...
-          </button>
-        }
+          
+         
         </div>
             
           

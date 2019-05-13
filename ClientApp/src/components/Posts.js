@@ -67,7 +67,7 @@ onCancelClicked=id=>{
             <div className="p-2 mb-2 bg-primary text-dark rounded">
 
             <div className="row">
-                <p className="col-md-6 text-warning">Are you sure you want to delete this post?</p> 
+                <p className="col-md-6 text-light">Are you sure you want to delete this post?</p> 
                 <div className="col-md-6">
                 <div className="float-right">
                 <button type="button" className="btn btn-primary btn-sm" onClick={()=>this.deletePost(props.Id)}>Yes</button>
@@ -105,8 +105,7 @@ onCancelClicked=id=>{
       </div>
     }
               
-              
-             
+          
               { this.state.mode=='edit' && this.state.id==post.id ? PostFormPageEdit ({post:post,onCancelClicked:this.onCancelClicked}):  
               <p className="card-text">{post.body}</p>}
 
@@ -114,10 +113,7 @@ onCancelClicked=id=>{
               
               
                 <div>
-        
-                   
-      
-               
+          
             </div>
            
         </div>
@@ -169,6 +165,7 @@ function mapStateToProps(state){
 
       }
     };
+
 const mapDispatchToProps={
   fetchPost:fetchPost,
   deletePost:deletePost
