@@ -9,6 +9,7 @@ namespace SampleReact.Service
     {
           IPagedList<Post> FetchPosts();
           Post AddPost(Post post);
+           Post EditPost(Post post);
           void DeletePost(int postId);
     }
 }

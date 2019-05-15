@@ -3,7 +3,7 @@ import { Form,Field,Formik    } from 'formik';
 import $ from 'jquery';
 import * as Yup from 'yup';
 import {connect} from 'react-redux'
-import {addPost,fetchPost} from './reduxAppConfig/Posts/PostsActions'
+import {addPost,fetchPost} from '../reduxAppConfig/Posts/PostsActions'
 import {Button,CircularProgress } from '@material-ui/core';
 import "react-datepicker/dist/react-datepicker.css";
 import { createMuiTheme,MuiThemeProvider } from '@material-ui/core/styles';
@@ -99,12 +99,12 @@ const PostFormik = ({
             <div className="form-group">
       
           {/* <label className={errors.title && touched.title?"text-danger":""} >Title</label> */}
-              <Field  component={TextField} label="Title" fullWidth="true"  className={errors.title && touched.title?"is-invalid":""} name="title"   />
+              <Field  component={TextField} label="Title" fullWidth={true}  className={errors.title && touched.title?"is-invalid":""} name="title"   />
               {/* {errors.title && touched.title && <span className="invalid-feedback">{errors.title}</span>  } */}
           </div>
           <div className="form-group">
           {/* <label className={errors.body && touched.body?"text-danger":""} >Body</label> */}
-                <Field component={TextField} fullWidth="true" label="Body" multiline rows="2" rowsMax="2"className={errors.body && touched.body?"is-invalid":""}  name="body" />
+                <Field component={TextField} fullWidth={true} label="Body" multiline rows="2" rowsMax="2"className={errors.body && touched.body?"is-invalid":""}  name="body" />
                 {/* {errors.body && touched.body && <span className="invalid-feedback">{errors.body}</span>  } */}
 
               

@@ -1,7 +1,9 @@
+import axios from 'axios'
 export const FETCH_POST='posts:fetch';
 export const REQUEST_FETCH_POST='posts:request';
 export const FETCH_POST_RECIEVED='posts:recieved';
 export const ADD_POST='posts:add';
+export const EDIT_POST='posts:edit';
 export const DELETE_POST='delete:add';
 export const ON_CHANGE_POST='post:onChange';
 export const BIND_POST='post:bind';
@@ -50,38 +52,74 @@ export const fetchPost = ()=> dispatch=> {
 
     dispatch({ type: REQUEST_FETCH_POST,payload:true })
 
-    // fetch('https://jsonplaceholder.typicode.com/posts')
-    fetch('/api/Post/GetAll')
-   .then(response => response.json())
-   .then(json => {
+//     // fetch('https://jsonplaceholder.typicode.com/posts')
+//     fetch('/api/Post/GetAll')
+//    .then(response => response.json())
+//    .then(json => {
  
-    setTimeout(() => {
-        dispatch(
-            { type: FETCH_POST,
-                payload:json.items
+//     setTimeout(() => {
+//         dispatch(
+//             { type: FETCH_POST,
+//                 payload:json.items
             
-          })
-          dispatch({ type:  FETCH_POST_RECIEVED, payload:false  })
-    }, 2000);
+//           })
+//           dispatch({ type:  FETCH_POST_RECIEVED, payload:false  })
+//     }, 2000);
 
-   
+//    })
 
-      
-    
-     
-   })
+        axios.get('/api/Post/GetAll')
+        .then(response => {
+            // handle success
+            console.log(response);
+            setTimeout(() => {
+                dispatch(
+                    { type: FETCH_POST,
+                        payload:response.data.items
+                    
+                  })
+                  dispatch({ type:  FETCH_POST_RECIEVED, payload:false  })
+            }, 2000);
+        })
+        .catch(error=> {
+            // handle error
+            console.log(error);
+        })
+        // .finally(function () {
+        //     // always executed
+        // });
 }
    
 
-// export  function onBindPost(){
+export const  editPost = postData=> dispatch=>{
+    // dispatch({ type: REQUEST_FETCH_POST,payload:true })
 
-//     return{
-//         type:BIND_POST,
-//         payload:{
-//             post:post
-//         }
-//     }
+   return axios.put('/api/Post/',postData);
 
-// }
+
+    // return  fetch('/api/Post/',{
+    //     method:'PUT',
+    //     headers:{'content-type':'application/json'},
+    //     body:JSON.stringify(postData)
+
+    // }).then((response) => {
+    //     if (response.ok) {
+    //       return response.json();
+    //     } else {
+    //       throw new Error('Something went wrong');
+    //     }
+    //   }).then(res=>res.json()).then(json=>{
+    //     console.log("API response: ",json)
+    //     dispatch({
+    //         type:EDIT_POST,
+    //         payload:{
+    //             isFetching:false
+    //         }
+    //     })}
+    // ).catch((error) => {
+    //     console.log(error)
+    //   });
+
+}
 
 

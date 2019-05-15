@@ -39,6 +39,17 @@ namespace SampleReact.Service
             this._unitOfWork.SaveChanges();
         }
 
+        public Post EditPost(Post paramPost)
+        {
+             var post=this.postRepo.GetFirstOrDefault(predicate: b => b.Id.Equals(paramPost.Id));
+
+             post.Title=paramPost.Title;
+             post.Body=paramPost.Body;
+            this.postRepo.Update(post);
+            this._unitOfWork.SaveChanges();
+            return paramPost;
+        }
+
         public  IPagedList<Post> FetchPosts()
         {
             var result=this.postRepo.GetPagedList(pageIndex: 0, pageSize: 100, orderBy:p=>p.OrderByDescending(x=>x.DateCreated));

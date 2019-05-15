@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import Posts from './Posts'
-import store from '../store/'
+import store from '../../store'
 import {Provider} from 'react-redux'
-import PostForm from './PostForm'
+import PostForm from '../PostForm'
 import PostFormPage from './PostFormPage'
 
 import { createMuiTheme,MuiThemeProvider } from '@material-ui/core/styles';

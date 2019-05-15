@@ -1,4 +1,4 @@
-import {FETCH_POST,ADD_POST,REQUEST_FETCH_POST,FETCH_POST_RECIEVED} from './PostsActions'
+import {FETCH_POST,ADD_POST,REQUEST_FETCH_POST,FETCH_POST_RECIEVED,EDIT_POST} from './PostsActions'
 const initialState={
     
           postList:[],
@@ -52,7 +52,16 @@ export default function PostsReducer(state=initialState,{type,payload}){
         };
      
         break;
-      
+        case EDIT_POST:
+        return {
+          ...state,
+          newPost:payload,
+          isFetching:false
+          
+
+        };
+     
+        break;
    
 
     default:

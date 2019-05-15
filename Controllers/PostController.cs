@@ -45,8 +45,13 @@ namespace SampleReact.Controllers
          }
 
         // PUT api/PostControlle/5
-        [HttpPut("{Id}")]
-        public void Put(int Id, [FromBody] string value) { }
+        [HttpPut]
+        public ActionResult Put([FromBody] Post post) {
+
+            var result=  _postService.EditPost(post);
+            // return Ok(result);
+            return BadRequest();
+         }
 
         // DELETE api/PostControlle/5
         [HttpDelete("{Id}")]

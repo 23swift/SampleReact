@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import $ from 'jquery';
 import {connect} from 'react-redux'
-import {fetchPost,deletePost} from './reduxAppConfig/Posts/PostsActions'
+import {fetchPost,deletePost,editPost} from '../reduxAppConfig/Posts/PostsActions'
 import PostFormPageEdit from './PostFormPageEdit'
 import {Button,CircularProgress,Grid } from '@material-ui/core';
 
@@ -36,7 +36,7 @@ export class Posts extends Component {
     this.setState({...this.state,mode:'edit',id:id});
 }
 
-onCancelClicked=id=>{
+onCancelClicked=()=>{
   this.setState({...this.state,mode:'',id:0});
 }
 
@@ -62,6 +62,7 @@ onCancelClicked=id=>{
     
     )
   }
+
   PostActionConfirmed=(props)=>{
     return(
             <div className="p-2 mb-2 bg-primary text-dark rounded">
@@ -89,49 +90,50 @@ onCancelClicked=id=>{
     
 
   }
+
+
    
    PostItems=(props)=>{
-    
+   
     return(
-      props.postList.map(post=>(
-         
-    <div className="card"  key={post.id}>
-    
-      <div className="card-body">
-      
-      { (this.state.mode==''|| this.state.mode=='delete') && <div className="p-1 mb-2">
-        <p className="float-right postDate text-black-50">Date: {post.dateCreated} </p>
-        <h5 className="card-title">{post.title}</h5>
-      </div>
-    }
-              
-          
-              { this.state.mode=='edit' && this.state.id==post.id ? PostFormPageEdit ({post:post,onCancelClicked:this.onCancelClicked}):  
-              <p className="card-text">{post.body}</p>}
+          props.postList.map(post=>
+            (
+            
+                  <div className="card"  key={post.id}>
+                  
+                    <div className="card-body">
+                              
+                              { (this.state.mode==''|| this.state.mode=='delete') && <div className="p-1 mb-2">
+                                <p className="float-right postDate text-black-50">Date: {post.dateCreated} </p>
+                                <h5 className="card-title">{post.title}</h5>
+                              </div>
+                            }
+                        
+                            { this.state.mode=='edit' && this.state.id==post.id ? <PostFormPageEdit post={post} onCancelClicked={this.onCancelClicked}/>:  
+                            <p className="card-text">{post.body}</p>}
 
+
+                          <div>
+                              {
+                                    
+                                    this.state.mode=='delete' && this.state.id==post.id ? this.PostActionConfirmed({Id:post.id}): this.state.id!=post.id && this.PostAction({Id:post.id})
+                            
+                                }
+                            </div>
+
+                      </div>
+                        
+                  </div>
               
-              
-              
-                <div>
+            
           
-            </div>
-           
-        </div>
-        <div className="card-footer">
-                 {
-                      
-                      this.state.mode=='delete' && this.state.id==post.id ? this.PostActionConfirmed({Id:post.id}): this.state.mode!='edit' && this.PostAction({Id:post.id})
-              
-                  }
-      </div>
-      </div>
-  )))
-  }
+            )
+      )
+  )}
+  
   
   render() {
-    
-
-   
+       
     return (
        
             <div>
@@ -139,10 +141,10 @@ onCancelClicked=id=>{
                <div>
              
               {this.props.isFetching ? <div className="text-black-50">
-                <span class="spinner-grow spinner-grow-sm text-primary" role="status" aria-hidden="true"></span>
+                <span className="spinner-grow spinner-grow-sm text-primary" role="status" aria-hidden="true"></span>
                 Loading please wait...
               </div>: <h2>Posts</h2>}
-              {this.PostItems({postList:this.props.postList})}
+              {!this.props.isFetching && this.PostItems({postList:this.props.postList})}
              
             </div>
            
@@ -168,7 +170,8 @@ function mapStateToProps(state){
 
 const mapDispatchToProps={
   fetchPost:fetchPost,
-  deletePost:deletePost
+  deletePost:deletePost,
+  editPost:editPost
 
 
 }

@@ -8,7 +8,7 @@ import {MySample} from './components/MySample';
 import {EmployeeForm} from './components/Employee/EmployeeForm';
 import{NewPage} from './components/NewPage'
 import {FormikPage} from './components/FormikPage'
-import{PostsContainer} from './components/PostsContainer'
+import{PostsContainer} from './components/Post/PostsContainer'
 
 import {connect} from 'react-redux'
 import updateUser from './components/reduxAppConfig/User/UserAction'
