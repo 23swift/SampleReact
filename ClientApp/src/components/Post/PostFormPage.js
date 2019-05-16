@@ -10,6 +10,9 @@ import { createMuiTheme,MuiThemeProvider } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 import Typography from '@material-ui/core/Typography';
 import { TextField,TextAreaField } from 'formik-material-ui';
+import signalRConnection from '../signalR/'
+
+
 const theme = createMuiTheme({
   typography: {
     useNextVariants: true,
@@ -35,13 +38,27 @@ export class PostFormPage extends  React.Component{
   constructor(props){
     super(props)
   //  console.log(this.props.addPost);
+
+
   }
+
+  sendData=()=>{
+  
+    signalRConnection.invoke("IncrementCounter").then(()=>{
+       
+    }).catch(function (err) {
+       console.error(err.toString());
+  });
+    
+  }
+  
+
   render(){
+   
     return(
       
-      
-                
-                <Formik validationSchema={SignupSchema}  initialValues={this.props.post} 
+      <div>
+         <Formik validationSchema={SignupSchema}  initialValues={this.props.post} 
                 
                 
                 
@@ -68,6 +85,11 @@ export class PostFormPage extends  React.Component{
                 }}
                 render={props => <PostFormik {...props} />} />
 
+                <button className="btn btn-primary" onClick={this.sendData}>send to Server</button>
+
+      </div>
+                
+               
         
               );
 
@@ -113,7 +135,7 @@ const PostFormik = ({
           <div className="form-group">
           
             <Button color="primary" variant="contained" type="submit" className="btn btn-primary" disabled= {isValidForm(errors) && !isSubmitting ? false :true} >
-                {isSubmitting ? <span className="text-primary"> <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                {isSubmitting ? <span className="text-primary"> <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                 Please wait...
               </span> : "Submit"}
           </Button> 
@@ -143,7 +165,8 @@ function mapStateToProps(state)
        
         return{
             post:state.posts.post,
-            isFetching:state.isFetching
+            isFetching:state.isFetching,
+            hasNewPost:state.posts.hasNewPost,
             // post:state.posts.newPost
         }
           

@@ -1,4 +1,4 @@
-import {FETCH_POST,ADD_POST,REQUEST_FETCH_POST,FETCH_POST_RECIEVED,EDIT_POST} from './PostsActions'
+import {FETCH_POST,ADD_POST,REQUEST_FETCH_POST,FETCH_POST_RECIEVED,EDIT_POST,HAS_NEW_POST} from './PostsActions'
 const initialState={
     
           postList:[],
@@ -6,7 +6,8 @@ const initialState={
             title:'',
             body:''
           },
-          isFetching:false
+          isFetching:false,
+          hasNewPost:false
       };
 
 export default function PostsReducer(state=initialState,{type,payload}){
@@ -45,8 +46,9 @@ export default function PostsReducer(state=initialState,{type,payload}){
     case ADD_POST:
         return {
           ...state,
-          newPost:payload,
-          isFetching:false
+          // newPost:payload,
+          isFetching:false,
+          hasNewPost:payload.hasNewPost
           
 
         };
@@ -57,6 +59,13 @@ export default function PostsReducer(state=initialState,{type,payload}){
           ...state,
           newPost:payload,
           isFetching:false
+          
+
+        };
+        case HAS_NEW_POST:
+        return {
+          ...state,
+          hasNewPost:true
           
 
         };

@@ -53,7 +53,7 @@ class PostFormPageEdit extends React.Component {
                 this.props.editPost(post).then(response=>{
                 this.props.fetchPost()  
                 
-                setSubmitting(false);
+               
                 // resetForm(); 
                 this.props.onCancelClicked();
                 }).catch(error=>{
@@ -62,6 +62,8 @@ class PostFormPageEdit extends React.Component {
                         this.setState({...this.state,showError:true})
 
                        
+                }).finally(()=>{
+                    setSubmitting(false);
                 });
                
             }, 3000);
@@ -114,7 +116,7 @@ const PostFormik = (props)=>{
                 Please wait...
             </span> : "Submit"}
         </Button> 
-        <Button color="secondary" variant="contained" className="btn btn-secondary btn-sm" onClick={()=>props.onCancelClicked()}>Cancel</Button>
+        {!props.isSubmitting && <Button color="secondary" variant="contained" className="btn btn-secondary btn-sm" onClick={()=>props.onCancelClicked()}>Cancel</Button>}
 
         
         
@@ -148,7 +150,7 @@ const ErrorSnackbar=(props)=>{
         onClose={props.onClose}
         autoHideDuration={5000}
         >
-            <Notification variant="error" onClose={props.onClose}   message="This is a success message!" />
+            <Notification variant="error" onClose={props.onClose}   message="An error has occured!" />
       </Snackbar>
     )
 }

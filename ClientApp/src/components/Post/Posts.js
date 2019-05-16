@@ -3,9 +3,12 @@ import $ from 'jquery';
 import {connect} from 'react-redux'
 import {fetchPost,deletePost,editPost} from '../reduxAppConfig/Posts/PostsActions'
 import PostFormPageEdit from './PostFormPageEdit'
-import {Button,CircularProgress,Grid } from '@material-ui/core';
-
-
+import {Button,IconButton  } from '@material-ui/core';
+import Icon from '@material-ui/core/Icon';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import Fab from '@material-ui/core/Fab';
+import Message from '@material-ui/icons/Message';
 
 export class Posts extends Component {
   constructor(props){
@@ -55,8 +58,13 @@ onCancelClicked=()=>{
     return(
       <div  className="float-right">
                 
-      <Button color="primary" variant="contained"  onClick={()=>this.onEditClicked(props.Id)}>Edit</Button>
-        <Button color="secondary" variant="contained"  onClick={()=>this.onDeleteClicked(props.Id)} >Delete</Button>
+     
+      <IconButton aria-label="delete"  onClick={()=>this.onEditClicked(props.Id)}>
+        <EditIcon  color="primary"/>
+      </IconButton>
+        <IconButton aria-label="delete"  onClick={()=>this.onDeleteClicked(props.Id)}>
+        <DeleteIcon  color="secondary" />
+      </IconButton>
          
     </div>
     
@@ -96,21 +104,19 @@ onCancelClicked=()=>{
    PostItems=(props)=>{
    
     return(
+      
           props.postList.map(post=>
             (
             
-                  <div className="card"  key={post.id}>
-                  
-                    <div className="card-body">
-                              
-                              { (this.state.mode==''|| this.state.mode=='delete') && <div className="p-1 mb-2">
-                                <p className="float-right postDate text-black-50">Date: {post.dateCreated} </p>
-                                <h5 className="card-title">{post.title}</h5>
-                              </div>
-                            }
-                        
+               
+                    <li className="list-group-item"  key={post.id}>        
+                           
                             { this.state.mode=='edit' && this.state.id==post.id ? <PostFormPageEdit post={post} onCancelClicked={this.onCancelClicked}/>:  
-                            <p className="card-text">{post.body}</p>}
+                            <div className="p-1 mb-2">
+                            <p className="float-right postDate text-black-50">Date: {post.dateCreated} </p>
+                            <h5 className="card-title">{post.title}</h5>
+                          
+                            <p className="card-text">{post.body}</p></div>}
 
 
                           <div>
@@ -121,9 +127,7 @@ onCancelClicked=()=>{
                                 }
                             </div>
 
-                      </div>
-                        
-                  </div>
+                    </li>
               
             
           
@@ -135,20 +139,34 @@ onCancelClicked=()=>{
   render() {
        
     return (
-       
-            <div>
-                
-               <div>
-             
-              {this.props.isFetching ? <div className="text-black-50">
-                <span className="spinner-grow spinner-grow-sm text-primary" role="status" aria-hidden="true"></span>
-                Loading please wait...
-              </div>: <h2>Posts</h2>}
-              {!this.props.isFetching && this.PostItems({postList:this.props.postList})}
-             
+      <div>
+           
+            <div className="card">
+              
+               <div  className="card-body">
+              
+               <div className="postScroll">
+               
+               <ul className="list-group list-group-flush">
+              
+                      {this.props.isFetching && <div className="text-black-50">
+                        <span className="spinner-grow spinner-grow-sm text-primary" role="status" aria-hidden="true"></span>
+                        Loading please wait...
+                      </div>}
+                      {this.props.hasNewPost && <li className="list-group-item"> 
+                      <IconButton color="secondary" onClick={()=>this.props.fetchPost()} className="float-right"  aria-label="Add an alarm">
+                      <Message />
+                      </IconButton> </li>} 
+
+                      {!this.props.isFetching && this.PostItems({postList:this.props.postList})}
+                    </ul>
+               </div>
+               
             </div>
            
           </div>
+      </div>
+       
 
     )
   }
@@ -163,7 +181,9 @@ function mapStateToProps(state){
     return {
         postList:state.posts.postList,
         newPost:state.posts.newPost,
-        isFetching:state.posts.isFetching
+        isFetching:state.posts.isFetching,
+        hasNewPost:state.posts.hasNewPost,
+        
 
       }
     };

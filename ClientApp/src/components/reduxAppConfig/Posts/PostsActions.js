@@ -6,7 +6,7 @@ export const ADD_POST='posts:add';
 export const EDIT_POST='posts:edit';
 export const DELETE_POST='delete:add';
 export const ON_CHANGE_POST='post:onChange';
-export const BIND_POST='post:bind';
+export const HAS_NEW_POST='post:hasNew';
 
 export  const addPost = postData=>dispatch=>{
     dispatch({ type: REQUEST_FETCH_POST,payload:true })
@@ -19,7 +19,7 @@ export  const addPost = postData=>dispatch=>{
                 
             dispatch({
                     type:ADD_POST,
-                    payload:{}
+                    payload:{ }
                 })
                 
                 
@@ -71,7 +71,7 @@ export const fetchPost = ()=> dispatch=> {
         axios.get('/api/Post/GetAll')
         .then(response => {
             // handle success
-            console.log(response);
+            // console.log(response);
             setTimeout(() => {
                 dispatch(
                     { type: FETCH_POST,
@@ -97,29 +97,16 @@ export const  editPost = postData=> dispatch=>{
    return axios.put('/api/Post/',postData);
 
 
-    // return  fetch('/api/Post/',{
-    //     method:'PUT',
-    //     headers:{'content-type':'application/json'},
-    //     body:JSON.stringify(postData)
+    
+}
 
-    // }).then((response) => {
-    //     if (response.ok) {
-    //       return response.json();
-    //     } else {
-    //       throw new Error('Something went wrong');
-    //     }
-    //   }).then(res=>res.json()).then(json=>{
-    //     console.log("API response: ",json)
-    //     dispatch({
-    //         type:EDIT_POST,
-    //         payload:{
-    //             isFetching:false
-    //         }
-    //     })}
-    // ).catch((error) => {
-    //     console.log(error)
-    //   });
+export const  hasNewPost = ()=> dispatch=>{
+    dispatch({ type: HAS_NEW_POST})
 
+//    return axios.put('/api/Post/',postData);
+
+
+    
 }
 
 

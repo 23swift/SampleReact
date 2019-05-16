@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using SampleReact.Service;
+using SampleReact.Controllers;
 
 namespace SampleReact
 {
@@ -30,9 +31,9 @@ namespace SampleReact
                 .AddUnitOfWork<Data.AppDbContext>()
                 .AddScoped<IPostService, PostService>(); 
 
-
+           
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            
+             services.AddSignalR();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -58,6 +59,10 @@ namespace SampleReact
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+           app.UseSignalR(routes =>
+                {
+                routes.MapHub<SignalRCounter>("/signalrcounter");
+                });
 
             app.UseMvc(routes =>
             {
@@ -65,7 +70,7 @@ namespace SampleReact
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
             });
-
+ 
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";
