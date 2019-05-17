@@ -3,7 +3,7 @@ import { Form,Field,Formik    } from 'formik';
 import $ from 'jquery';
 import * as Yup from 'yup';
 import {connect} from 'react-redux'
-import {addPost,fetchPost} from '../reduxAppConfig/Posts/PostsActions'
+import {addPost,fetchPost,dispatchHasNewPost} from '../reduxAppConfig/Posts/PostsActions'
 import {Button,CircularProgress } from '@material-ui/core';
 import "react-datepicker/dist/react-datepicker.css";
 import { createMuiTheme,MuiThemeProvider } from '@material-ui/core/styles';
@@ -38,11 +38,21 @@ export class PostFormPage extends  React.Component{
   constructor(props){
     super(props)
   //  console.log(this.props.addPost);
+  signalRConnection.on("IncrementCounter", data => {
+    console.log(data);
+    this.props.dispatchHasNewPost()
+  });
+
+  signalRConnection.start().then().catch(function (err) {
+    return console.error(err.toString());
+  });
+     
 
 
   }
+  
 
-  sendData=()=>{
+  dispatchHub=()=>{
   
     signalRConnection.invoke("IncrementCounter").then(()=>{
        
@@ -54,7 +64,7 @@ export class PostFormPage extends  React.Component{
   
 
   render(){
-   
+  
     return(
       
       <div>
@@ -74,7 +84,8 @@ export class PostFormPage extends  React.Component{
                   setTimeout(() => {
                     // console.log(post);
                     this.props.addPost(post).then(()=>{
-                      this.props.fetchPost()  
+                      this.props.fetchPost() 
+                      this.dispatchHub ()
                     }
                      
                     );
@@ -85,7 +96,7 @@ export class PostFormPage extends  React.Component{
                 }}
                 render={props => <PostFormik {...props} />} />
 
-                <button className="btn btn-primary" onClick={this.sendData}>send to Server</button>
+               
 
       </div>
                 
@@ -174,7 +185,8 @@ function mapStateToProps(state)
 
   const mapDispatchToProps={
    addPost:addPost,
-   fetchPost:fetchPost
+   fetchPost:fetchPost,
+   dispatchHasNewPost:dispatchHasNewPost
   
   }
 

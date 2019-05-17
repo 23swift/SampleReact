@@ -3,11 +3,11 @@ import $ from 'jquery';
 import {connect} from 'react-redux'
 import {fetchPost,deletePost,editPost} from '../reduxAppConfig/Posts/PostsActions'
 import PostFormPageEdit from './PostFormPageEdit'
-import {Button,IconButton  } from '@material-ui/core';
+import {Button,IconButton ,Fab,Badge } from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import Fab from '@material-ui/core/Fab';
+
 import Message from '@material-ui/icons/Message';
 
 export class Posts extends Component {
@@ -154,9 +154,13 @@ onCancelClicked=()=>{
                         Loading please wait...
                       </div>}
                       {this.props.hasNewPost && <li className="list-group-item"> 
-                      <IconButton color="secondary" onClick={()=>this.props.fetchPost()} className="float-right"  aria-label="Add an alarm">
-                      <Message />
-                      </IconButton> </li>} 
+                     <IconButton onClick={()=>this.props.fetchPost()} className="float-right">
+                     <Badge  badgeContent={4} color="primary" >
+                        <Message color="secondary" />
+                      </Badge>
+                     </IconButton>
+                      
+                      </li>} 
 
                       {!this.props.isFetching && this.PostItems({postList:this.props.postList})}
                     </ul>

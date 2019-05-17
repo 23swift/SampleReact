@@ -20,7 +20,8 @@ export default function PostsReducer(state=initialState,{type,payload}){
         ...state,
         // postList:payload.postList,
         postList:payload,
-        isFetching:false
+        isFetching:false,
+        hasNewPost:false
 
 
       };
@@ -40,6 +41,7 @@ export default function PostsReducer(state=initialState,{type,payload}){
         ...state,
         // postList:payload.postList,
         isFetching:false
+
 
       };
       break;

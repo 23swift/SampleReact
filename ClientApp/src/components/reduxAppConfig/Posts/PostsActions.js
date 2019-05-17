@@ -100,7 +100,7 @@ export const  editPost = postData=> dispatch=>{
     
 }
 
-export const  hasNewPost = ()=> dispatch=>{
+export const  dispatchHasNewPost = ()=> dispatch=>{
     dispatch({ type: HAS_NEW_POST})
 
 //    return axios.put('/api/Post/',postData);
