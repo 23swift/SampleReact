@@ -3,21 +3,24 @@ import $ from 'jquery';
 import {connect} from 'react-redux'
 import {fetchPost,deletePost,editPost} from '../reduxAppConfig/Posts/PostsActions'
 import PostFormPageEdit from './PostFormPageEdit'
-import {Button,IconButton ,Fab,Badge } from '@material-ui/core';
+import {Button,IconButton ,Fab,Badge, LinearProgress } from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 
 import Message from '@material-ui/icons/Message';
-
+import {CSSTransition,TransitionGroup}  from 'react-transition-group'; // ES6
 export class Posts extends Component {
   constructor(props){
     super(props);
    
     this.state={
         mode:'',
-        id:0
+        id:0,
+        showDeleteConfirm:false,
+        showActionButtons:true
     }
+    
  
   }
   
@@ -29,8 +32,11 @@ export class Posts extends Component {
 
   
   onDeleteClicked=id=>{
+    this.setState({...this.state,showDeleteConfirm:true,id:id,showActionButtons:false});
+    
       
-      this.setState({...this.state,mode:'delete',id:id});
+      console.log('current Id:',id);
+      
  
   }
 
@@ -44,55 +50,68 @@ onCancelClicked=()=>{
 }
 
   onNoClicked=id=>{
-    console.log(id);
-    this.setState({...this.state,mode:'',id:0});
-
-    setTimeout(() => {
-      console.log(this.state);
-
-    },3000);
+    
+    
+    this.setState({...this.state,showDeleteConfirm:false,id:id});
+    
+    
    
 }
 
   PostAction=(props)=>{
+    
+    
     return(
+      this.state.showActionButtons && 
       <div  className="float-right">
                 
      
-      <IconButton aria-label="delete"  onClick={()=>this.onEditClicked(props.Id)}>
+      <IconButton aria-label="delete"  onClick={()=>this.onEditClicked(props.id)}>
         <EditIcon  color="primary"/>
       </IconButton>
-        <IconButton aria-label="delete"  onClick={()=>this.onDeleteClicked(props.Id)}>
+        <IconButton aria-label="delete"  onClick={()=>this.onDeleteClicked(props.id)}>
         <DeleteIcon  color="secondary" />
       </IconButton>
          
-    </div>
+    </div> 
     
     )
   }
 
   PostActionConfirmed=(props)=>{
+    
     return(
+      <CSSTransition
+        in={this.state.showDeleteConfirm && this.state.id==props.id}
+        timeout={300}
+        classNames="alert"
+        unmountOnExit
+        // onEnter={() => this.setState({...this.state,mode:''})}
+        onExited={() =>  this.setState({...this.state,showActionButtons:true})}
+      >
             <div className="p-2 mb-2 bg-primary text-dark rounded">
 
-            <div className="row">
-                <p className="col-md-6 text-light">Are you sure you want to delete this post?</p> 
-                <div className="col-md-6">
-                <div className="float-right">
-                <button type="button" className="btn btn-primary btn-sm" onClick={()=>this.deletePost(props.Id)}>Yes</button>
-                    <button type="button" className="btn btn-light btn-sm" onClick={()=>this.onNoClicked()}>No</button>
-                </div>
-                
-                </div>
-            </div>
-        </div>  
+              <div className="row">
+                  <p className="col-md-6 text-light">Are you sure you want to delete this post?</p> 
+                  <div className="col-md-6">
+                  <div className="float-right">
+                  <button type="button" className="btn btn-primary btn-sm" onClick={()=>this.deletePost(props.id)}>Yes</button>
+                      <button type="button" className="btn btn-light btn-sm" onClick={()=>this.onNoClicked()}>No</button>
+                  </div>
+                  
+                  </div>
+              </div>
+          </div>  
+      </CSSTransition>
+           
 
   )
 }
    
-  deletePost=(Id)=> {
-     
-    this.props.deletePost(Id).then(()=>{
+  deletePost=(id)=> {
+    this.setState({...this.state,showDeleteConfirm:false});
+    this.props.deletePost(id).then(()=>{
+      
       this.props.fetchPost()  
     });
     
@@ -104,36 +123,48 @@ onCancelClicked=()=>{
    PostItems=(props)=>{
    
     return(
-      
-          props.postList.map(post=>
-            (
-            
-               
-                    <li className="list-group-item"  key={post.id}>        
-                           
-                            { this.state.mode=='edit' && this.state.id==post.id ? <PostFormPageEdit post={post} onCancelClicked={this.onCancelClicked}/>:  
-                            <div className="p-1 mb-2">
-                            <p className="float-right postDate text-black-50">Date: {post.dateCreated} </p>
-                            <h5 className="card-title">{post.title}</h5>
-                          
-                            <p className="card-text">{post.body}</p></div>}
-
-
-                          <div>
-                              {
-                                    
-                                    this.state.mode=='delete' && this.state.id==post.id ? this.PostActionConfirmed({Id:post.id}): this.state.id!=post.id && this.PostAction({Id:post.id})
+      <TransitionGroup className="todo-list">
+         { props.postList.map(post=>
+                (
+                  <CSSTransition
+                    key={post.id}
+                    timeout={500}
+                    classNames="item"
+                  >
+                  <li className="list-group-item"  key={post.id}>        
+                                  
+                              { this.state.mode=='edit' && this.state.id==post.id ? <PostFormPageEdit post={post} onCancelClicked={this.onCancelClicked}/>:  
+                              <div className="p-1 mb-2">
+                              <p className="float-right postDate text-black-50">Date: {post.dateCreated} </p>
+                              <h5 className="card-title">{post.title}</h5>
                             
-                                }
-                            </div>
+                              <p className="card-text">{post.body}</p></div>}
 
-                    </li>
+
+                            <div>
+                               
+                              </div>
+                              <div className="row">
+                                <div className="col-md-12 px-1 mx-1">
+                                {this.PostActionConfirmed({id:post.id})}
+                                {this.PostAction({id:post.id})}
+                                  
+                                </div>
+                              </div>
+
+                      </li>
+            </CSSTransition>
+                  
+                       
+                  
+                
               
-            
-          
-            )
-      )
-  )}
+                )
+          )}
+      </TransitionGroup>
+         
+  )
+}
   
   
   render() {
@@ -162,7 +193,7 @@ onCancelClicked=()=>{
                       
                       </li>} 
 
-                      {!this.props.isFetching && this.PostItems({postList:this.props.postList})}
+                      {this.PostItems({postList:this.props.postList})}
                     </ul>
                </div>
                

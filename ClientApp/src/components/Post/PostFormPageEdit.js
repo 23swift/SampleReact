@@ -89,8 +89,7 @@ const PostFormik = (props)=>{
      
         <Form>
                         
-        <div className="card">
-        <div className="card-body">
+       
 
         <Typography component="h5" variant="h5" gutterBottom color="primary">
             Update Post
@@ -123,11 +122,7 @@ const PostFormik = (props)=>{
         </div>
             
         
-        </div>
-
-
-
-        </div>
+        
      
         
         </Form>
