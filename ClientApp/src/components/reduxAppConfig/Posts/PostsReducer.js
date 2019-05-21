@@ -7,7 +7,9 @@ const initialState={
             body:''
           },
           isFetching:false,
-          hasNewPost:false
+          hasNewPost:false,
+          newPostCount:0,
+          currentPost:{}
       };
 
 export default function PostsReducer(state=initialState,{type,payload}){
@@ -21,7 +23,8 @@ export default function PostsReducer(state=initialState,{type,payload}){
         // postList:payload.postList,
         postList:payload,
         isFetching:false,
-        hasNewPost:false
+        hasNewPost:false,
+        newPostCount:0
 
 
       };
@@ -67,7 +70,8 @@ export default function PostsReducer(state=initialState,{type,payload}){
         case HAS_NEW_POST:
         return {
           ...state,
-          hasNewPost:true
+          hasNewPost:true,
+          newPostCount:state.newPostCount+1
           
 
         };

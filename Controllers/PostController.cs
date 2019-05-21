@@ -49,8 +49,8 @@ namespace SampleReact.Controllers
         public ActionResult Put([FromBody] Post post) {
 
             var result=  _postService.EditPost(post);
-            // return Ok(result);
-            return BadRequest();
+            return Ok(result);
+            // return BadRequest();
          }
 
         // DELETE api/PostControlle/5
