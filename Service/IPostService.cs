@@ -7,7 +7,7 @@ namespace SampleReact.Service
 {
     public interface IPostService
     {
-          IPagedList<Post> FetchPosts();
+          IPagedList<Post> FetchPosts(int pageIndex,int pageSize);
           Post AddPost(Post post);
            Post EditPost(Post post);
           void DeletePost(int postId);

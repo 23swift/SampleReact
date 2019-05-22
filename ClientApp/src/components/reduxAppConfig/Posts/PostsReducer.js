@@ -1,7 +1,15 @@
-import {FETCH_POST,ADD_POST,REQUEST_FETCH_POST,FETCH_POST_RECIEVED,EDIT_POST,HAS_NEW_POST} from './PostsActions'
+import {FETCH_POST,ADD_POST,REQUEST_FETCH_POST,FETCH_POST_RECIEVED,EDIT_POST,HAS_NEW_POST,
+  FETCH_PAGED_POST} from './PostsActions'
+// "pageIndex":0,"pageSize":5,"totalCount":22,"totalPages":5,
 const initialState={
     
-          postList:[],
+          postList:{
+            pageIndex:0,
+            pageSize:5,
+            totalPages:0,
+            items:[]
+
+          },
           post:{
             title:'',
             body:''
@@ -22,6 +30,25 @@ export default function PostsReducer(state=initialState,{type,payload}){
         ...state,
         // postList:payload.postList,
         postList:payload,
+        isFetching:false,
+        hasNewPost:false,
+        newPostCount:0
+
+
+      };
+      break;
+      
+      case FETCH_PAGED_POST:
+        
+      return {
+        ...state,
+        // postList:payload.postList,
+        postList:{...state.postList,
+        pageIndex:payload.pageIndex,
+            pageSize:payload.pageSize,
+            totalPages:payload.totalPages,
+            items:[...state.postList.items,...payload.items]
+        },
         isFetching:false,
         hasNewPost:false,
         newPostCount:0

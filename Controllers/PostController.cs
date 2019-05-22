@@ -23,7 +23,17 @@ namespace SampleReact.Controllers
         [HttpGet("[action]")]
         public ActionResult<Post> GetAll()
         {
-            var result = _postService.FetchPosts();
+            var result = _postService.FetchPosts(0,5);
+
+            return Ok(result);
+
+
+        }
+
+         [HttpGet("GetPaged")]
+        public ActionResult<Post> GetPaged(int pageIndex,int pageSize)
+        {
+            var result = _postService.FetchPosts(pageIndex,pageSize);
 
             return Ok(result);
 

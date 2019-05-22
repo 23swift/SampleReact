@@ -1,17 +1,13 @@
 import React, { Component } from 'react'
-import Typography from '@material-ui/core/Typography';
-import $ from 'jquery';
 import {connect} from 'react-redux'
-import {fetchPost,deletePost,editPost} from '../reduxAppConfig/Posts/PostsActions'
+import {fetchPost,fetchPagedPost,deletePost,editPost} from '../reduxAppConfig/Posts/PostsActions'
 import {PostEditForm} from './PostFormEdit'
-import {Button,IconButton ,Fab,Badge, LinearProgress,Snackbar } from '@material-ui/core';
-import Icon from '@material-ui/core/Icon';
+import {IconButton ,Badge} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-
 import Message from '@material-ui/icons/Message';
 import {CSSTransition,TransitionGroup}  from 'react-transition-group'; // ES6
-
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 
 export class Posts extends Component {
@@ -40,10 +36,7 @@ export class Posts extends Component {
   onDeleteClicked=id=>{
     this.setState({...this.state,showDeleteConfirm:true,id:id});
     
-      // id:id,showActionButtons:false
-      console.log('current Id:',id);
-      
- 
+     
   }
 
   onEditClicked=id=>{
@@ -86,9 +79,10 @@ onCancelClicked=()=>{
     
     this.props.deletePost(id).then(()=>{
       
-      this.props.fetchPost()  
+      this.props.fetchPost();
+      this.setState({...this.state,showDeleteConfirm:false});
     });
-    this.setState({...this.state,showDeleteConfirm:false});
+   
     
 
   }
@@ -97,72 +91,94 @@ getNewposts=()=>{
 
   this.props.fetchPost()  
 }
+
+fetchPagedPost=()=>{
+  let newPageIndex=this.props.postList.pageIndex<this.props.postList.totalPages ? this.props.postList.pageIndex+1:0;
+ 
+  
+  this.props.fetchPagedPost(newPageIndex,3);
+}
+  /////////////////////////////////////////////////////// 
+  PostItems=(props)=>{
+     
+     
+   let ItemList=( 
    
-   PostItems=(props)=>{
-   
-    return(
-      <div>
-        <TransitionGroup className="todo-list">
-         { props.postList.map(post=>
-                (
-                  <CSSTransition
-                    key={post.id}
-                    timeout={500}
-                    classNames="item"
-                  >
-                  <li className="list-group-item"  key={post.id}>        
-                                                             
-                             
-                            <div>
-                                        { this.state.showDeleteConfirm || this.state.id!=post.id ? <PostItem post={post}/>:""}
-                                
-                                        
-                                        <CSSTransition
-                                        in={this.state.showEditForm && this.state.id==post.id}
-                                        timeout={300}
-                                        classNames="alert"
-                                        unmountOnExit
-                                        onEnter={() => this.setState({...this.state,showItem:false})}
-                                        onExited={() =>  this.setState({...this.state,showActionButtons:true,showItem:true,id:0})}
-                                    >
-                                      <PostEditForm  post={post} editPost={this.editPost} handleCancel={this.onCancelClicked}/>
-                                    </CSSTransition>
-
-                               
-                              </div>
-                              <div className="row">
-                                <div className="col-md-12 px-1 mx-1">
-
-                                <CSSTransition in={this.state.showDeleteConfirm && this.state.id==post.id}
-                                 timeout={300} classNames="alert"  unmountOnExit
-                                  onEnter={() => this.setState({...this.state,showActionButtons:false})}
-                                  onExited={() =>  this.setState({...this.state,showActionButtons:true})}
-                                >
-                                          <PostActionConfirmed id={post.id} onNoClicked={this.onNoClicked} deletePost={()=>this.deletePost(post.id)}/>
-                                </CSSTransition>
-
-                              { this.state.showActionButtons && this.state.id!=post.id ? <PostAction onEditClicked={()=>this.onEditClicked(post.id)} onDeleteClicked={()=>this.onDeleteClicked(post.id)}/>:""}
-                                  
-                                </div>
-                              </div>
-
-                      </li>
-            </CSSTransition>
-                  
-                       
-                  
-                
-              
-                )
-          )}
-      </TransitionGroup>
-      {/* <ErrorSnackbar open={this.state.showError} onClose={this.handleClose}/> */}
-      </div>
-      
+    props.postList.items.map(post=>
+           (
          
+                  <CSSTransition
+                  key={post.id}
+                  timeout={500}
+                  classNames="item"
+                >
+                <li className="list-group-item"  key={post.id}>        
+                                                          
+                          
+                          <div>
+                                      { this.state.showDeleteConfirm || this.state.id!=post.id ? <PostItem post={post}/>:""}
+                              
+                                      
+                                      <CSSTransition
+                                      in={this.state.showEditForm && this.state.id==post.id}
+                                      timeout={300}
+                                      classNames="alert"
+                                      unmountOnExit
+                                      onEnter={() => this.setState({...this.state,showItem:false})}
+                                      onExited={() =>  this.setState({...this.state,showActionButtons:true,showItem:true,id:0})}
+                                  >
+                                    <PostEditForm  post={post} editPost={this.editPost} handleCancel={this.onCancelClicked}/>
+                                  </CSSTransition>
+
+                            
+                            </div>
+                            <div className="row">
+                              <div className="col-md-12 px-1 mx-1">
+
+                              <CSSTransition in={this.state.showDeleteConfirm && this.state.id==post.id}
+                              timeout={300} classNames="alert"  unmountOnExit
+                                onEnter={() => this.setState({...this.state,showActionButtons:false})}
+                                onExited={() =>  this.setState({...this.state,showActionButtons:true})}
+                              >
+                                        <PostActionConfirmed id={post.id} onNoClicked={this.onNoClicked} deletePost={()=>this.deletePost(post.id)}/>
+                              </CSSTransition>
+
+                            { this.state.showActionButtons && this.state.id!=post.id ? <PostAction onEditClicked={()=>this.onEditClicked(post.id)} onDeleteClicked={()=>this.onDeleteClicked(post.id)}/>:""}
+                                
+                              </div>
+                            </div>
+
+                    </li>
+              </CSSTransition>
+
+
+             
+           
+         
+           )
+     )
+ );
+
+    return(
+                  <InfiniteScroll
+                    dataLength={this.props.postList.items.length}
+                    height={750}
+                    // scrollThreshold="500px"
+                    next={this.fetchPagedPost}
+                    hasMore={this.props.postList.pageIndex<this.props.postList.totalPages}
+                    loader={<span className="text-primary"> <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                    Loading please wait...
+                  </span> }
+                  >
+                      <TransitionGroup>
+                                          {ItemList}
+                      </TransitionGroup>
+                         
+                  </InfiniteScroll>
+
   )
 }
- 
+ ////////////////////////////////////////////////////////
   
   render() {
        
@@ -176,35 +192,33 @@ getNewposts=()=>{
                         <span className="spinner-grow spinner-grow-sm text-primary" role="status" aria-hidden="true"></span>
                         Please wait...
                       </div>}
-               <div className="postScroll">
-              
-               <ul className="list-group list-group-flush">
-                          <CSSTransition in={this.props.hasNewPost}
-                                 timeout={300} classNames="alert"  unmountOnExit
-                                  // onEnter={() => this.setState({...this.state,showActionButtons:false})}
-                                  // onExited={() =>  this.setState({...this.state,showActionButtons:true})}
-                                >
-                                
-                                <li className="list-group-item float-right">
-                                <IconButton onClick={()=>this.props.fetchPost()} className="float-right">
-                                      <Badge  badgeContent={this.props.newPostCount} color="primary" >
-                                          <Message color="secondary" />
-                                        </Badge>
-                                      </IconButton>
-                                </li>
-                                        
-                                </CSSTransition>
-                     
-                      {this.props.hasNewPost && <li className="list-group-item"> 
-                             
-                      
-                      </li>} 
-                               
+                            <ul className="list-group list-group-flush">
 
-                      {this.PostItems({postList:this.props.postList})}
-                    </ul>
-               </div>
-               
+                            <CSSTransition in={this.props.hasNewPost}
+                                  timeout={300} classNames="alert"  unmountOnExit
+                                    onEnter={() => this.setState({...this.state,showActionButtons:false})}
+                                    onExited={() =>  this.setState({...this.state,showActionButtons:true})}
+                                  >
+                                  
+                                  <li className="list-group-item float-right">
+                                  <IconButton onClick={()=>this.props.fetchPost()} className="float-right">
+                                        <Badge  badgeContent={this.props.newPostCount} color="primary" >
+                                            <Message color="secondary" />
+                                          </Badge>
+                                        </IconButton>
+                                  </li>
+                                          
+                                  </CSSTransition>
+
+                            {this.props.hasNewPost && <li className="list-group-item"> 
+                              
+
+                            </li>} 
+                                
+
+                            {this.PostItems({postList:this.props.postList})}
+                            </ul>
+  
             </div>
            
           </div>
@@ -283,7 +297,8 @@ function mapStateToProps(state){
 const mapDispatchToProps={
   fetchPost:fetchPost,
   deletePost:deletePost,
-  editPost:editPost
+  editPost:editPost,
+  fetchPagedPost:fetchPagedPost
 
 
 }

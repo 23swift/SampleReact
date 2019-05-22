@@ -50,9 +50,10 @@ namespace SampleReact.Service
             return paramPost;
         }
 
-        public  IPagedList<Post> FetchPosts()
+        public  IPagedList<Post> FetchPosts(int pageIndex,int pageSize)
         {
-            var result=this.postRepo.GetPagedList(pageIndex: 0, pageSize: 100, orderBy:p=>p.OrderByDescending(x=>x.DateCreated));
+            var result=this.postRepo.GetPagedList(pageIndex: pageIndex, pageSize: pageSize, orderBy:p=>p.OrderByDescending(x=>x.DateCreated));
+            
             return  result;
         }
     }

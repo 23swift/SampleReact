@@ -64,3 +64,6 @@ h1, h2, h5 {
 .item-exit-active {
   opacity: 0;
   transition: opacity 500ms ease-in; }
+
+.postList {
+  height: 500px; }

@@ -1,5 +1,6 @@
 import axios from 'axios'
 export const FETCH_POST='posts:fetch';
+export const FETCH_PAGED_POST='paged_posts:fetch';
 export const REQUEST_FETCH_POST='posts:request';
 export const FETCH_POST_RECIEVED='posts:recieved';
 export const ADD_POST='posts:add';
@@ -29,7 +30,7 @@ export  const addPost = postData=>dispatch=>{
 }
 
 export  const deletePost = postData=>dispatch=>{
-    console.log(postData);
+   
     dispatch({ type: REQUEST_FETCH_POST,payload:true })
     return    fetch('/api/Post/'+postData,{
         method:'DELETE',
@@ -52,30 +53,21 @@ export const fetchPost = ()=> dispatch=> {
 
     dispatch({ type: REQUEST_FETCH_POST,payload:true })
 
-//     // fetch('https://jsonplaceholder.typicode.com/posts')
-//     fetch('/api/Post/GetAll')
-//    .then(response => response.json())
-//    .then(json => {
- 
-//     setTimeout(() => {
-//         dispatch(
-//             { type: FETCH_POST,
-//                 payload:json.items
-            
-//           })
-//           dispatch({ type:  FETCH_POST_RECIEVED, payload:false  })
-//     }, 2000);
 
-//    })
 
-        axios.get('/api/Post/GetAll')
+        axios.get('/api/Post/GetPaged',
+        {
+            params: {
+                pageIndex: 0,
+                pageSize:5
+            }
+        })
         .then(response => {
-            // handle success
-            // console.log(response);
+            
             setTimeout(() => {
                 dispatch(
                     { type: FETCH_POST,
-                        payload:response.data.items
+                        payload:response.data
                     
                   })
                   dispatch({ type:  FETCH_POST_RECIEVED, payload:false  })
@@ -89,7 +81,36 @@ export const fetchPost = ()=> dispatch=> {
         //     // always executed
         // });
 }
-   
+export const fetchPagedPost = (pageIndexParam,pageSizeparam)=> dispatch=> {
+// "pageIndex":0,"pageSize":5,"totalCount":22,"totalPages":5,
+console.log('index',pageIndexParam,pageSizeparam);
+
+        axios.get('/api/Post/GetPaged',
+                {
+                    params: {
+                        pageIndex: pageIndexParam,
+                        pageSize:pageSizeparam
+                    }
+                }).then(response => {
+                    
+            setTimeout(() => {
+               
+                dispatch(
+                    { type: FETCH_PAGED_POST,
+                        payload:response.data
+                    
+                  })
+                  dispatch({ type:  FETCH_POST_RECIEVED, payload:false  })
+            }, 3000);
+        })
+        .catch(error=> {
+        
+            console.log(error);
+        })
+        // .finally(function () {
+        //     // always executed
+        // });
+}
 
 export const  editPost = postData=> dispatch=>{
     // dispatch({ type: REQUEST_FETCH_POST,payload:true })
