@@ -186,34 +186,31 @@ fetchPagedPost=()=>{
       <div>
            
             <div className="card">
-              
-               <div  className="card-body">
-               {this.props.isFetching && <div className="text-black-50">
-                        <span className="spinner-grow spinner-grow-sm text-primary" role="status" aria-hidden="true"></span>
-                        Please wait...
-                      </div>}
-                            <ul className="list-group list-group-flush">
-
-                            <CSSTransition in={this.props.hasNewPost}
+              <div className="card-title">
+              <CSSTransition in={this.props.hasNewPost}
                                   timeout={300} classNames="alert"  unmountOnExit
                                     onEnter={() => this.setState({...this.state,showActionButtons:false})}
                                     onExited={() =>  this.setState({...this.state,showActionButtons:true})}
                                   >
                                   
-                                  <li className="list-group-item float-right">
+                                
                                   <IconButton onClick={()=>this.props.fetchPost()} className="float-right">
                                         <Badge  badgeContent={this.props.newPostCount} color="primary" >
                                             <Message color="secondary" />
                                           </Badge>
                                         </IconButton>
-                                  </li>
+                                
                                           
                                   </CSSTransition>
-
-                            {this.props.hasNewPost && <li className="list-group-item"> 
-                              
-
-                            </li>} 
+                {this.props.isFetching &&  <div className="text-black-50">
+                        <span className="spinner-grow spinner-grow-sm text-primary" role="status" aria-hidden="true"></span>
+                        Please wait...
+                      </div>}
+              </div>
+               <div  className="card-body">
+              
+                     
+                            <ul className="list-group list-group-flush">
                                 
 
                             {this.PostItems({postList:this.props.postList})}
